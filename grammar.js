@@ -173,7 +173,7 @@ module.exports = grammar({
 
     _operand_list: ($) => sepByComma($._operand),
 
-    _operand: ($) => choice($.mem_access, $.register, $.macro_argument, $._expression),
+    _operand: ($) => choice($.mem_access, $.register, $._expression),
 
     mem_access: ($) => seq('[', choice($.register_increment, $.register, $._expression), ']'),
 
@@ -211,6 +211,7 @@ module.exports = grammar({
         $.identifier,
         $.local_label,
         $.program_counter,
+        $.macro_argument,
         $.parenthesized_expression,
         $.unary_expression,
         $.binary_expression,

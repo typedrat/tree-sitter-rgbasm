@@ -48,6 +48,10 @@
           "named": true
         },
         {
+          "type": "macro_argument",
+          "named": true
+        },
+        {
           "type": "octal",
           "named": true
         },
@@ -116,6 +120,10 @@
           },
           {
             "type": "local_label",
+            "named": true
+          },
+          {
+            "type": "macro_argument",
             "named": true
           },
           {
@@ -279,6 +287,10 @@
             "named": true
           },
           {
+            "type": "macro_argument",
+            "named": true
+          },
+          {
             "type": "octal",
             "named": true
           },
@@ -403,6 +415,10 @@
           "named": true
         },
         {
+          "type": "macro_argument",
+          "named": true
+        },
+        {
           "type": "octal",
           "named": true
         },
@@ -490,6 +506,10 @@
           },
           {
             "type": "local_label",
+            "named": true
+          },
+          {
+            "type": "macro_argument",
             "named": true
           },
           {
@@ -590,6 +610,10 @@
           "named": true
         },
         {
+          "type": "macro_argument",
+          "named": true
+        },
+        {
           "type": "octal",
           "named": true
         },
@@ -687,6 +711,10 @@
           "named": true
         },
         {
+          "type": "macro_argument",
+          "named": true
+        },
+        {
           "type": "octal",
           "named": true
         },
@@ -759,6 +787,10 @@
           },
           {
             "type": "local_label",
+            "named": true
+          },
+          {
+            "type": "macro_argument",
             "named": true
           },
           {
@@ -1096,6 +1128,10 @@
           "named": true
         },
         {
+          "type": "macro_argument",
+          "named": true
+        },
+        {
           "type": "octal",
           "named": true
         },
@@ -1190,6 +1226,10 @@
           "named": true
         },
         {
+          "type": "macro_argument",
+          "named": true
+        },
+        {
           "type": "octal",
           "named": true
         },
@@ -1276,6 +1316,10 @@
             "named": true
           },
           {
+            "type": "macro_argument",
+            "named": true
+          },
+          {
             "type": "octal",
             "named": true
           },
@@ -1355,6 +1399,10 @@
         },
         {
           "type": "local_label",
+          "named": true
+        },
+        {
+          "type": "macro_argument",
           "named": true
         },
         {
@@ -1608,6 +1656,10 @@
         },
         {
           "type": "local_label",
+          "named": true
+        },
+        {
+          "type": "macro_argument",
           "named": true
         },
         {

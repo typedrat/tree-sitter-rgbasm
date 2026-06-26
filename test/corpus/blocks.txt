@@ -33,3 +33,56 @@ ENDL
       (statement (label_definition name: (identifier)) (data_directive (argument_list (decimal)))))))
   (statement (load_block name: (string) (section_type)
     (statement (instruction_line (instruction mnemonic: (mnemonic) (register) (register)))))))
+
+==================
+macro arguments inside expressions
+==================
+MACRO lb
+    ld \1, (\2) << 8 | (\3)
+ENDM
+MACRO m2
+    db \1, \2
+    dw \1 * 2
+    IF \1 < 0
+        WARN "neg"
+    ENDC
+ENDM
+---
+
+(source_file
+  (statement
+    (macro_definition name: (identifier)
+      (statement
+        (instruction_line
+          (instruction mnemonic: (mnemonic)
+            (macro_argument)
+            (binary_expression
+              left: (binary_expression
+                left: (parenthesized_expression
+                  (macro_argument))
+                right: (decimal))
+              right: (parenthesized_expression
+                (macro_argument))))))))
+  (statement
+    (macro_definition name: (identifier)
+      (statement
+        (data_directive
+          (argument_list
+            (macro_argument)
+            (macro_argument))))
+      (statement
+        (data_directive
+          (argument_list
+            (binary_expression
+              left: (macro_argument)
+              right: (decimal)))))
+      (statement
+        (if_block
+          condition: (binary_expression
+            left: (macro_argument)
+            right: (decimal))
+          (statement
+            (directive
+              (directive_keyword)
+              (argument_list
+                (string)))))))))

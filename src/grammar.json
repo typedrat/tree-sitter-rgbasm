@@ -1061,10 +1061,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "macro_argument"
-        },
-        {
-          "type": "SYMBOL",
           "name": "_expression"
         }
       ]
@@ -1359,6 +1355,10 @@
         {
           "type": "SYMBOL",
           "name": "program_counter"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_argument"
         },
         {
           "type": "SYMBOL",
