@@ -1,0 +1,135 @@
+==================
+keyword-prefixed identifiers lex as identifiers
+==================
+
+address:
+subtract:
+include_me:
+    jp cancel
+    call cleanup
+    jr zone
+    ld a, decimal
+
+---
+
+(source_file
+  (statement
+    (label_definition
+      name: (identifier)))
+  (statement
+    (label_definition
+      name: (identifier)))
+  (statement
+    (label_definition
+      name: (identifier)))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (branch_mnemonic)
+        (identifier))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (branch_mnemonic)
+        (identifier))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (branch_mnemonic)
+        (identifier))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)
+        (register)
+        (identifier)))))
+
+==================
+condition vs register disambiguation for c
+==================
+
+    jr c, .loop
+    ld a, c
+    jp hl
+    ret c
+    jr nz, .skip
+
+---
+
+(source_file
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (branch_mnemonic)
+        (condition_code)
+        (local_label))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)
+        (register)
+        (register))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (branch_mnemonic)
+        (register))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (branch_mnemonic)
+        (condition_code))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (branch_mnemonic)
+        (condition_code)
+        (local_label)))))
+
+==================
+hl increment vs hl-prefixed label
+==================
+
+    ld a, [hl]
+    ld a, [hli]
+    ld [hld], a
+    ld [hl+], a
+    ld hl, hlines
+
+---
+
+(source_file
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)
+        (register)
+        (mem_access
+          (register)))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)
+        (register)
+        (mem_access
+          (register_increment)))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)
+        (mem_access
+          (register_increment))
+        (register))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)
+        (mem_access
+          (register_increment))
+        (register))))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)
+        (register)
+        (identifier)))))

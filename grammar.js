@@ -13,10 +13,12 @@ function ci(word) {
   );
 }
 
-// A single token matching any of the given case-insensitive keywords, with
-// precedence 1 so it wins over `identifier` (precedence 0) on exact matches.
+// A single token matching any of the given case-insensitive keywords.
+// No explicit prec: relies on longest-match (identifier beats a keyword prefix)
+// and rule-definition order for same-length ties (keyword rules are defined
+// before `identifier`, so exact matches still resolve to the keyword).
 function kw(...words) {
-  return token(prec(1, choice(...words.map(ci))));
+  return token(choice(...words.map(ci)));
 }
 
 // Comma-separated, non-empty list.
@@ -92,9 +94,12 @@ module.exports = grammar({
 
     branch_mnemonic: ($) => kw('jr', 'jp', 'call', 'ret'),
 
-    // Precedence 2 so `c` lexes as a condition (not register) ONLY in states
-    // where a condition is valid — i.e. the first operand slot of a branch.
-    condition_code: ($) => token(prec(2, choice(ci('nz'), ci('nc'), ci('z'), ci('c')))),
+    // No explicit prec: `c`/`nz`/`nc`/`z` lex as condition_code ONLY in states
+    // where condition_code is valid (first operand of a branch). In other states
+    // these are resolved as register by longest-match + rule order.
+    // condition_code is defined BEFORE register so same-length `c` → condition_code
+    // when both are valid in a given parse state.
+    condition_code: ($) => token(choice(ci('nz'), ci('nc'), ci('z'), ci('c'))),
 
     _operand_list: ($) => sepByComma($._operand),
 
@@ -103,10 +108,10 @@ module.exports = grammar({
     mem_access: ($) => seq('[', choice($.register_increment, $.register, $._expression), ']'),
 
     // Atomic token: hli, hld, hl+, or hl- (case-insensitive for the hl/i/d parts).
-    // Must be a single lexical token so the lexer does not commit to register_increment
-    // when it sees bare `hl` (e.g. in `[hl]`).
+    // No explicit prec: relies on longest-match so `hli` (len 3) beats `hl` (len 2),
+    // and an identifier like `hlines` (len 6) beats `hli` (len 3).
     register_increment: ($) =>
-      token(prec(2, /[hH][lL]([iI]|[dD]|[+]|[-])/)),
+      token(/[hH][lL]([iI]|[dD]|[+]|[-])/),
 
     mnemonic: ($) =>
       kw(
