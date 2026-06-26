@@ -86,3 +86,59 @@ ENDM
               (directive_keyword)
               (argument_list
                 (string)))))))))
+
+==================
+macro-argument suffix on label definitions and references
+==================
+MACRO loop_fixed
+    xor a, a
+.loop\@
+    ld [hl+], a
+    dec c
+    jr nz, .loop\@
+ENDM
+Outer\@:
+    nop
+---
+
+(source_file
+  (statement
+    (macro_definition
+      name: (identifier)
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (mnemonic)
+            (register)
+            (register))))
+      (statement
+        (label_definition
+          name: (local_label)
+          (macro_argument)))
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (mnemonic)
+            (mem_access
+              (register_increment))
+            (register))))
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (mnemonic)
+            (register))))
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (branch_mnemonic)
+            (condition_code)
+            (local_label)
+            (macro_argument))))))
+  (statement
+    (label_definition
+      name: (identifier)
+      (macro_argument)))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)))))

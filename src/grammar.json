@@ -1333,6 +1333,35 @@
         "value": "\\\\([1-9]|<[^>\\n]*>|@|#|,|\\(|\\))"
       }
     },
+    "_label_ref": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "local_label"
+              }
+            ]
+          },
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "macro_argument"
+            }
+          }
+        ]
+      }
+    },
     "_expression": {
       "type": "CHOICE",
       "members": [
@@ -1343,6 +1372,10 @@
         {
           "type": "SYMBOL",
           "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_label_ref"
         },
         {
           "type": "SYMBOL",
@@ -2578,6 +2611,13 @@
               }
             },
             {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "macro_argument"
+              }
+            },
+            {
               "type": "CHOICE",
               "members": [
                 {
@@ -2601,6 +2641,13 @@
               "content": {
                 "type": "SYMBOL",
                 "name": "local_label"
+              }
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "macro_argument"
               }
             },
             {

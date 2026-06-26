@@ -204,10 +204,17 @@ module.exports = grammar({
     // no interpolation semantics in Phase 1.
     macro_argument: ($) => token(/\\([1-9]|<[^>\n]*>|@|#|,|\(|\))/),
 
+    // Suffixed symbol reference: identifier or local_label followed by one or
+    // more macro-argument tokens (e.g. `.loop\@`, `Name\@`).  prec(1) prefers
+    // the combined reading over a bare identifier/local_label + stray macro_argument.
+    _label_ref: ($) =>
+      prec(1, seq(choice($.identifier, $.local_label), repeat1($.macro_argument))),
+
     _expression: ($) =>
       choice(
         $._number,
         $.string,
+        $._label_ref,
         $.identifier,
         $.local_label,
         $.program_counter,
@@ -333,9 +340,9 @@ module.exports = grammar({
     label_definition: ($) =>
       choice(
         // Global/scoped labels require a colon (distinguishes from macro calls).
-        seq(field('name', $.identifier), choice('::', ':')),
+        seq(field('name', $.identifier), repeat($.macro_argument), choice('::', ':')),
         // Local labels may omit the colon.
-        seq(field('name', $.local_label), optional(choice('::', ':'))),
+        seq(field('name', $.local_label), repeat($.macro_argument), optional(choice('::', ':'))),
       ),
 
     identifier: ($) => token(/[A-Za-z_][A-Za-z0-9_#$@]*(\.[A-Za-z_][A-Za-z0-9_#$@]*)?/),
