@@ -1,0 +1,12 @@
+==================
+numeric literal formats
+==================
+DB 42, $FF, 0xA0, &17, 0o17, %1010, 0b1010, 1.5, 1.5q8, 'A', 1_000
+---
+
+(source_file
+  (statement (data_directive
+    (argument_list
+      (decimal) (hex) (hex) (octal) (octal)
+      (binary) (binary) (fixed_point) (fixed_point)
+      (char_constant) (decimal)))))

@@ -1,0 +1,23 @@
+==================
+section declarations
+==================
+SECTION "Main", ROM0
+SECTION "Banked", ROMX[$4567], BANK[3]
+SECTION FRAGMENT "Frag", WRAM0, ALIGN[8]
+SECTION UNION "U", WRAMX, BANK[1]
+---
+
+(source_file
+  (statement (section_directive name: (string) (section_type)))
+  (statement (section_directive name: (string) (section_type (section_constraint (hex))) (section_constraint (decimal))))
+  (statement (section_directive (section_modifier) name: (string) (section_type) (section_constraint (decimal))))
+  (statement (section_directive (section_modifier) name: (string) (section_type) (section_constraint (decimal)))))
+
+==================
+ALIGN with two-arg section constraint
+==================
+SECTION "Aligned", WRAM0, ALIGN[8, 2]
+---
+
+(source_file
+  (statement (section_directive name: (string) (section_type) (section_constraint (decimal) (decimal)))))

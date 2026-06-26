@@ -1,0 +1,166 @@
+==================
+macro, rept, for, union, load blocks
+==================
+MACRO lb
+    ld \1, \2
+ENDM
+REPT 4
+    add a, c
+ENDR
+FOR n, 0, 256, 1
+    dw n
+ENDR
+UNION
+    wA: ds 2
+NEXTU
+    wB: ds 1
+ENDU
+LOAD "RAM", WRAM0
+    ld a, b
+ENDL
+---
+
+(source_file
+  (statement (macro_definition name: (identifier)
+    (statement (instruction_line (instruction mnemonic: (mnemonic) (macro_argument) (macro_argument))))))
+  (statement (rept_block count: (decimal)
+    (statement (instruction_line (instruction mnemonic: (mnemonic) (register) (register))))))
+  (statement (for_block variable: (identifier) (decimal) (decimal) (decimal)
+    (statement (data_directive (argument_list (identifier))))))
+  (statement (union_block
+    (statement (label_definition name: (identifier)) (data_directive (argument_list (decimal))))
+    (nextu_clause
+      (statement (label_definition name: (identifier)) (data_directive (argument_list (decimal)))))))
+  (statement (load_block name: (string) (section_type)
+    (statement (instruction_line (instruction mnemonic: (mnemonic) (register) (register)))))))
+
+==================
+macro arguments inside expressions
+==================
+MACRO lb
+    ld \1, (\2) << 8 | (\3)
+ENDM
+MACRO m2
+    db \1, \2
+    dw \1 * 2
+    IF \1 < 0
+        WARN "neg"
+    ENDC
+ENDM
+---
+
+(source_file
+  (statement
+    (macro_definition name: (identifier)
+      (statement
+        (instruction_line
+          (instruction mnemonic: (mnemonic)
+            (macro_argument)
+            (binary_expression
+              left: (binary_expression
+                left: (parenthesized_expression
+                  (macro_argument))
+                right: (decimal))
+              right: (parenthesized_expression
+                (macro_argument))))))))
+  (statement
+    (macro_definition name: (identifier)
+      (statement
+        (data_directive
+          (argument_list
+            (macro_argument)
+            (macro_argument))))
+      (statement
+        (data_directive
+          (argument_list
+            (binary_expression
+              left: (macro_argument)
+              right: (decimal)))))
+      (statement
+        (if_block
+          condition: (binary_expression
+            left: (macro_argument)
+            right: (decimal))
+          (statement
+            (directive
+              (directive_keyword)
+              (argument_list
+                (string)))))))))
+
+==================
+macro-argument suffix on label definitions and references
+==================
+MACRO loop_fixed
+    xor a, a
+.loop\@
+    ld [hl+], a
+    dec c
+    jr nz, .loop\@
+ENDM
+Outer\@:
+    nop
+---
+
+(source_file
+  (statement
+    (macro_definition
+      name: (identifier)
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (mnemonic)
+            (register)
+            (register))))
+      (statement
+        (label_definition
+          name: (local_label)
+          (macro_argument)))
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (mnemonic)
+            (mem_access
+              (register_increment))
+            (register))))
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (mnemonic)
+            (register))))
+      (statement
+        (instruction_line
+          (instruction
+            mnemonic: (branch_mnemonic)
+            (condition_code)
+            (local_label)
+            (macro_argument))))))
+  (statement
+    (label_definition
+      name: (identifier)
+      (macro_argument)))
+  (statement
+    (instruction_line
+      (instruction
+        mnemonic: (mnemonic)))))
+
+==================
+empty-body macro
+==================
+MACRO foo
+ENDM
+---
+
+(source_file
+  (statement (macro_definition name: (identifier))))
+
+==================
+FOR two-arg short form
+==================
+FOR n, 256
+    dw n
+ENDR
+---
+
+(source_file
+  (statement (for_block variable: (identifier) (decimal)
+    (statement (data_directive (argument_list (identifier)))))))

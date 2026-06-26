@@ -1,0 +1,13 @@
+==================
+line and block comments
+==================
+; a line comment
+
+/* a block
+   comment */
+---
+
+(source_file
+  (statement
+    (comment))
+  (block_comment))

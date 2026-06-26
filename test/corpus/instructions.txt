@@ -1,0 +1,22 @@
+==================
+instructions, operands, mem access, double-colon, macro args
+==================
+    nop
+    ld a, [hl]
+    ld [hl+], a
+    ld hl, $1234
+    push bc
+    ld a, b :: ld c, d
+    ld \1, \2
+---
+
+(source_file
+  (statement (instruction_line (instruction (mnemonic))))
+  (statement (instruction_line (instruction (mnemonic) (register) (mem_access (register)))))
+  (statement (instruction_line (instruction (mnemonic) (mem_access (register_increment)) (register))))
+  (statement (instruction_line (instruction (mnemonic) (register) (hex))))
+  (statement (instruction_line (instruction (mnemonic) (register))))
+  (statement (instruction_line
+    (instruction (mnemonic) (register) (register))
+    (instruction (mnemonic) (register) (register))))
+  (statement (instruction_line (instruction (mnemonic) (macro_argument) (macro_argument)))))

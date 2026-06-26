@@ -1,0 +1,14 @@
+{
+  "name": "tree-sitter-rgbasm",
+  "version": "0.1.0",
+  "description": "RGBASM (RGBDS Game Boy assembly) grammar for tree-sitter",
+  "license": "MIT",
+  "author": "Alexis Williams <alexis@typedr.at>",
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "0.26.9"
+  }
+}

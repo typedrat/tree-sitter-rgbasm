@@ -1,0 +1,20 @@
+==================
+if / elif / else / endc
+==================
+IF X < 0
+    db 0
+ELIF X == 0
+    db 1
+ELSE
+    db 2
+ENDC
+---
+
+(source_file
+  (statement (if_block
+    condition: (binary_expression left: (identifier) right: (decimal))
+    (statement (data_directive (argument_list (decimal))))
+    (elif_clause condition: (binary_expression left: (identifier) right: (decimal))
+      (statement (data_directive (argument_list (decimal)))))
+    (else_clause
+      (statement (data_directive (argument_list (decimal))))))))
