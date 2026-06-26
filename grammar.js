@@ -59,9 +59,26 @@ module.exports = grammar({
         ),
       ),
 
-    // Placeholder statement: replaced/extended in later tasks. For now a
-    // statement is just a line comment (block comments are extras).
-    statement: ($) => $.comment,
+    statement: ($) =>
+      choice(
+        seq($.label_definition, optional($._line_body)),
+        $._line_body,
+      ),
+
+    // Placeholder body; alternatives added in later tasks.
+    _line_body: ($) => $.comment,
+
+    label_definition: ($) =>
+      choice(
+        // Global/scoped labels require a colon (distinguishes from macro calls).
+        seq(field('name', $.identifier), choice('::', ':')),
+        // Local labels may omit the colon.
+        seq(field('name', $.local_label), optional(choice('::', ':'))),
+      ),
+
+    identifier: ($) => token(/[A-Za-z_][A-Za-z0-9_#$@]*(\.[A-Za-z_][A-Za-z0-9_#$@]*)?/),
+
+    local_label: ($) => token(/\.[A-Za-z_][A-Za-z0-9_#$@]*/),
 
     comment: ($) => token(seq(';', /[^\n]*/)),
 

@@ -1,0 +1,16 @@
+==================
+global, exported, local, scoped labels
+==================
+Global:
+Exported::
+.local
+.local_with_colon:
+Parent.child:
+---
+
+(source_file
+  (statement (label_definition name: (identifier)))
+  (statement (label_definition name: (identifier)))
+  (statement (label_definition name: (local_label)))
+  (statement (label_definition name: (local_label)))
+  (statement (label_definition name: (identifier))))
