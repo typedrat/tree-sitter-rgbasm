@@ -20,7 +20,8 @@ The following features are intentionally deferred:
 - Fragment literals: `[[ … ]]`
 - Anonymous labels: `:+` / `:-`
 - Graphics constants: `` `0123 ``
-- Charmap directives: `CHARMAP`, `NEWCHARMAP`, `SETCHARMAP`, `PUSHC`, `POPC`
+- Charmap semantics: `CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC` directives parse as
+  generic directives, but charmap semantics (custom string encodings) are not modeled
 - Full symbol-interpolation semantics (macro-time text expansion)
 
 ## Build & test
@@ -152,9 +153,10 @@ cp queries/zed/*.scm languages/rgbasm/
   branch mnemonic); `c` is a `register` node when it appears as an operand elsewhere.
 
 - **Section-type keywords are globally reserved.** `ROM0`, `ROMX`, `VRAM`, `SRAM`, `WRAM0`,
-  `WRAMX`, `OAM`, `HRAM`, and `ECHO` are lexed as section-type tokens everywhere. A symbol
-  literally named after one of these will not parse. This is an acceptable limitation given how
-  rare such symbols are in practice.
+  `WRAMX`, `OAM`, and `HRAM` are lexed as section-type tokens everywhere (along with single-letter
+  register names `a`/`b`/`c`/`d`/`e`/`h`/`l` and register pairs `af`/`bc`/`de`/`hl`/`sp`). A
+  symbol literally named after one of these will not parse. This is an acceptable limitation given
+  how rare such symbols are in practice.
 
 - **`keyword:` field for highlighting.** Directive and block keywords are exposed via a `keyword:`
   field on their parent node, making them straightforward to highlight without capturing anonymous
