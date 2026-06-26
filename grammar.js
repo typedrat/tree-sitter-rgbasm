@@ -66,12 +66,45 @@ module.exports = grammar({
       ),
 
     // Placeholder body; alternatives added in later tasks.
-    _line_body: ($) => choice($.comment, $.data_directive),
+    _line_body: ($) => choice($.comment, $.data_directive, $.instruction_line),
 
     data_directive: ($) =>
       seq(field('keyword', kw('DB', 'DW', 'DL', 'DS')), optional($.argument_list)),
 
     argument_list: ($) => sepByComma($._expression),
+
+    instruction_line: ($) => seq($.instruction, repeat(seq('::', $.instruction))),
+
+    instruction: ($) => $._plain_instruction,
+
+    _plain_instruction: ($) => seq(field('mnemonic', $.mnemonic), optional($._operand_list)),
+
+    _operand_list: ($) => sepByComma($._operand),
+
+    _operand: ($) => choice($.mem_access, $.register, $.macro_argument, $._expression),
+
+    mem_access: ($) => seq('[', choice($.register_increment, $.register, $._expression), ']'),
+
+    // Atomic token: hli, hld, hl+, or hl- (case-insensitive for the hl/i/d parts).
+    // Must be a single lexical token so the lexer does not commit to register_increment
+    // when it sees bare `hl` (e.g. in `[hl]`).
+    register_increment: ($) =>
+      token(prec(2, /[hH][lL]([iI]|[dD]|[+]|[-])/)),
+
+    mnemonic: ($) =>
+      kw(
+        'adc', 'add', 'and', 'bit', 'ccf', 'cpl', 'cp', 'daa', 'dec', 'di', 'ei',
+        'halt', 'inc', 'ldh', 'ld', 'nop', 'or', 'pop', 'push', 'res', 'reti',
+        'rlca', 'rlc', 'rla', 'rl', 'rrca', 'rrc', 'rra', 'rr', 'rst', 'sbc',
+        'scf', 'set', 'sla', 'sra', 'srl', 'stop', 'sub', 'swap', 'xor',
+      ),
+
+    register: ($) =>
+      kw('af', 'bc', 'de', 'hl', 'sp', 'a', 'b', 'c', 'd', 'e', 'h', 'l'),
+
+    // Macro-arg references: \1-\9, \<...>, \@, \#, \,, \(, \). Recognized only;
+    // no interpolation semantics in Phase 1.
+    macro_argument: ($) => token(/\\([1-9]|<[^>\n]*>|@|#|,|\(|\))/),
 
     _expression: ($) =>
       choice(
