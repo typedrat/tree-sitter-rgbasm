@@ -1,0 +1,11 @@
+==================
+string with escapes
+==================
+DB "hi\n", "a\"b"
+---
+
+(source_file
+  (statement (data_directive
+    (argument_list
+      (string (escape_sequence))
+      (string (escape_sequence))))))
