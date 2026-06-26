@@ -1,0 +1,35 @@
+==================
+macro, rept, for, union, load blocks
+==================
+MACRO lb
+    ld \1, \2
+ENDM
+REPT 4
+    add a, c
+ENDR
+FOR n, 0, 256, 1
+    dw n
+ENDR
+UNION
+    wA: ds 2
+NEXTU
+    wB: ds 1
+ENDU
+LOAD "RAM", WRAM0
+    ld a, b
+ENDL
+---
+
+(source_file
+  (statement (macro_definition name: (identifier)
+    (statement (instruction_line (instruction mnemonic: (mnemonic) (macro_argument) (macro_argument))))))
+  (statement (rept_block count: (decimal)
+    (statement (instruction_line (instruction mnemonic: (mnemonic) (register) (register))))))
+  (statement (for_block variable: (identifier) (decimal) (decimal) (decimal)
+    (statement (data_directive (argument_list (identifier))))))
+  (statement (union_block
+    (statement (label_definition name: (identifier)) (data_directive (argument_list (decimal))))
+    (nextu_clause
+      (statement (label_definition name: (identifier)) (data_directive (argument_list (decimal)))))))
+  (statement (load_block name: (string) (section_type)
+    (statement (instruction_line (instruction mnemonic: (mnemonic) (register) (register)))))))

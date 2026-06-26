@@ -26,6 +26,11 @@ function sepByComma(rule) {
   return seq(rule, repeat(seq(',', rule)));
 }
 
+// Newline-separated inner statements for block bodies (allows blank lines).
+function blockBody($) {
+  return seq(repeat1('\n'), repeat(seq($.statement, repeat1('\n'))));
+}
+
 const PREC = {
   or: 1,
   and: 2,
@@ -79,7 +84,60 @@ module.exports = grammar({
         $.purge_directive,
         $.include_directive,
         $.directive,
+        $.macro_definition,
+        $.rept_block,
+        $.for_block,
+        $.if_block,
+        $.union_block,
+        $.load_block,
         $.macro_invocation,
+      ),
+
+    macro_definition: ($) =>
+      seq(kw('MACRO'), field('name', $.identifier), blockBody($), kw('ENDM')),
+
+    rept_block: ($) =>
+      seq(kw('REPT'), field('count', $._expression), blockBody($), kw('ENDR')),
+
+    for_block: ($) =>
+      seq(
+        kw('FOR'),
+        field('variable', $.identifier),
+        ',',
+        sepByComma($._expression),
+        blockBody($),
+        kw('ENDR'),
+      ),
+
+    if_block: ($) =>
+      seq(
+        kw('IF'),
+        field('condition', $._expression),
+        blockBody($),
+        repeat($.elif_clause),
+        optional($.else_clause),
+        kw('ENDC'),
+      ),
+
+    elif_clause: ($) =>
+      seq(kw('ELIF'), field('condition', $._expression), blockBody($)),
+
+    else_clause: ($) => seq(kw('ELSE'), blockBody($)),
+
+    union_block: ($) =>
+      seq(kw('UNION'), blockBody($), repeat($.nextu_clause), kw('ENDU')),
+
+    nextu_clause: ($) => seq(kw('NEXTU'), blockBody($)),
+
+    load_block: ($) =>
+      seq(
+        kw('LOAD'),
+        optional(field('modifier', $.section_modifier)),
+        field('name', $.string),
+        ',',
+        $.section_type,
+        blockBody($),
+        kw('ENDL'),
       ),
 
     data_directive: ($) =>
