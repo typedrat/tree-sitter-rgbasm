@@ -218,6 +218,7 @@ module.exports = grammar({
         $.identifier,
         $.local_label,
         $.program_counter,
+        $.anonymous_label_ref,
         $.macro_argument,
         $.parenthesized_expression,
         $.unary_expression,
@@ -227,6 +228,10 @@ module.exports = grammar({
       ),
 
     program_counter: ($) => token('@'),
+
+    // Anonymous label reference: ':' followed by one or more '+'/'-'.
+    // The '+'/'-' run is required, so this never collides with a bare ':'.
+    anonymous_label_ref: ($) => token(/:[-+]+/),
 
     parenthesized_expression: ($) => seq('(', $._expression, ')'),
 
@@ -347,7 +352,11 @@ module.exports = grammar({
         seq(field('name', $.identifier), repeat($.macro_argument), choice('::', ':')),
         // Local labels may omit the colon.
         seq(field('name', $.local_label), repeat($.macro_argument), optional(choice('::', ':'))),
+        // Anonymous label definition: a bare colon, no name.
+        $.anonymous_label,
       ),
+
+    anonymous_label: ($) => ':',
 
     identifier: ($) => token(/[A-Za-z_][A-Za-z0-9_#$@]*(\.[A-Za-z_][A-Za-z0-9_#$@]*)?/),
 

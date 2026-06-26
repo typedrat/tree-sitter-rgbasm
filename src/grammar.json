@@ -1531,6 +1531,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "anonymous_label_ref"
+        },
+        {
+          "type": "SYMBOL",
           "name": "macro_argument"
         },
         {
@@ -1560,6 +1564,13 @@
       "content": {
         "type": "STRING",
         "value": "@"
+      }
+    },
+    "anonymous_label_ref": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": ":[-+]+"
       }
     },
     "parenthesized_expression": {
@@ -2895,8 +2906,16 @@
               ]
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "anonymous_label"
         }
       ]
+    },
+    "anonymous_label": {
+      "type": "STRING",
+      "value": ":"
     },
     "identifier": {
       "type": "TOKEN",
