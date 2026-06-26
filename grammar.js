@@ -75,9 +75,26 @@ module.exports = grammar({
 
     instruction_line: ($) => seq($.instruction, repeat(seq('::', $.instruction))),
 
-    instruction: ($) => $._plain_instruction,
+    instruction: ($) => choice($._plain_instruction, $._branch_instruction),
 
     _plain_instruction: ($) => seq(field('mnemonic', $.mnemonic), optional($._operand_list)),
+
+    _branch_instruction: ($) =>
+      seq(
+        field('mnemonic', $.branch_mnemonic),
+        optional(
+          choice(
+            seq($.condition_code, optional(seq(',', $._operand_list))),
+            $._operand_list,
+          ),
+        ),
+      ),
+
+    branch_mnemonic: ($) => kw('jr', 'jp', 'call', 'ret'),
+
+    // Precedence 2 so `c` lexes as a condition (not register) ONLY in states
+    // where a condition is valid — i.e. the first operand slot of a branch.
+    condition_code: ($) => token(prec(2, choice(ci('nz'), ci('nc'), ci('z'), ci('c')))),
 
     _operand_list: ($) => sepByComma($._operand),
 
@@ -99,8 +116,14 @@ module.exports = grammar({
         'scf', 'set', 'sla', 'sra', 'srl', 'stop', 'sub', 'swap', 'xor',
       ),
 
+    // Prec 0 (no explicit prec) so that a longer identifier beats a register
+    // prefix at the same starting position. Same-length ties (e.g. `l` vs `l`)
+    // are resolved by grammar ordering: register is defined before identifier.
     register: ($) =>
-      kw('af', 'bc', 'de', 'hl', 'sp', 'a', 'b', 'c', 'd', 'e', 'h', 'l'),
+      token(choice(
+        ci('af'), ci('bc'), ci('de'), ci('hl'), ci('sp'),
+        ci('a'), ci('b'), ci('c'), ci('d'), ci('e'), ci('h'), ci('l'),
+      )),
 
     // Macro-arg references: \1-\9, \<...>, \@, \#, \,, \(, \). Recognized only;
     // no interpolation semantics in Phase 1.

@@ -1,0 +1,20 @@
+==================
+branches with and without conditions
+==================
+    jr .loop
+    jr nz, .loop
+    jp hl
+    jp c, Label
+    call z, Func
+    ret
+    ret nc
+---
+
+(source_file
+  (statement (instruction_line (instruction (branch_mnemonic) (local_label))))
+  (statement (instruction_line (instruction (branch_mnemonic) (condition_code) (local_label))))
+  (statement (instruction_line (instruction (branch_mnemonic) (register))))
+  (statement (instruction_line (instruction (branch_mnemonic) (condition_code) (identifier))))
+  (statement (instruction_line (instruction (branch_mnemonic) (condition_code) (identifier))))
+  (statement (instruction_line (instruction (branch_mnemonic))))
+  (statement (instruction_line (instruction (branch_mnemonic) (condition_code)))))
