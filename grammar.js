@@ -94,54 +94,54 @@ module.exports = grammar({
       ),
 
     macro_definition: ($) =>
-      seq(kw('MACRO'), field('name', $.identifier), blockBody($), kw('ENDM')),
+      seq(field('keyword', alias(kw('MACRO'), 'macro_kw')), field('name', $.identifier), blockBody($), field('keyword', alias(kw('ENDM'), 'endm_kw'))),
 
     rept_block: ($) =>
-      seq(kw('REPT'), field('count', $._expression), blockBody($), kw('ENDR')),
+      seq(field('keyword', alias(kw('REPT'), 'rept_kw')), field('count', $._expression), blockBody($), field('keyword', alias(kw('ENDR'), 'endr_kw'))),
 
     for_block: ($) =>
       seq(
-        kw('FOR'),
+        field('keyword', alias(kw('FOR'), 'for_kw')),
         field('variable', $.identifier),
         ',',
         sepByComma($._expression),
         blockBody($),
-        kw('ENDR'),
+        field('keyword', alias(kw('ENDR'), 'endr_kw')),
       ),
 
     if_block: ($) =>
       seq(
-        kw('IF'),
+        field('keyword', alias(kw('IF'), 'if_kw')),
         field('condition', $._expression),
         blockBody($),
         repeat($.elif_clause),
         optional($.else_clause),
-        kw('ENDC'),
+        field('keyword', alias(kw('ENDC'), 'endc_kw')),
       ),
 
     elif_clause: ($) =>
-      seq(kw('ELIF'), field('condition', $._expression), blockBody($)),
+      seq(field('keyword', alias(kw('ELIF'), 'elif_kw')), field('condition', $._expression), blockBody($)),
 
-    else_clause: ($) => seq(kw('ELSE'), blockBody($)),
+    else_clause: ($) => seq(field('keyword', alias(kw('ELSE'), 'else_kw')), blockBody($)),
 
     union_block: ($) =>
-      seq(kw('UNION'), blockBody($), repeat($.nextu_clause), kw('ENDU')),
+      seq(field('keyword', alias(kw('UNION'), 'union_kw')), blockBody($), repeat($.nextu_clause), field('keyword', alias(kw('ENDU'), 'endu_kw'))),
 
-    nextu_clause: ($) => seq(kw('NEXTU'), blockBody($)),
+    nextu_clause: ($) => seq(field('keyword', alias(kw('NEXTU'), 'nextu_kw')), blockBody($)),
 
     load_block: ($) =>
       seq(
-        kw('LOAD'),
+        field('keyword', alias(kw('LOAD'), 'load_kw')),
         optional(field('modifier', $.section_modifier)),
         field('name', $.string),
         ',',
         $.section_type,
         blockBody($),
-        kw('ENDL'),
+        field('keyword', alias(kw('ENDL'), 'endl_kw')),
       ),
 
     data_directive: ($) =>
-      seq(field('keyword', kw('DB', 'DW', 'DL', 'DS')), optional($.argument_list)),
+      seq(field('keyword', alias(kw('DB', 'DW', 'DL', 'DS'), 'data_kw')), optional($.argument_list)),
 
     argument_list: ($) => sepByComma($._expression),
 
@@ -280,7 +280,7 @@ module.exports = grammar({
 
     section_directive: ($) =>
       seq(
-        kw('SECTION'),
+        field('keyword', alias(kw('SECTION'), 'section_kw')),
         optional($.section_modifier),
         field('name', $.string),
         ',',
@@ -300,16 +300,16 @@ module.exports = grammar({
     section_constraint: ($) =>
       choice(
         seq('[', $._expression, ']'),
-        seq(kw('BANK'), '[', $._expression, ']'),
-        seq(kw('ALIGN'), '[', sepByComma($._expression), ']'),
+        seq(field('keyword', alias(kw('BANK'), 'bank_kw')), '[', $._expression, ']'),
+        seq(field('keyword', alias(kw('ALIGN'), 'align_kw')), '[', sepByComma($._expression), ']'),
       ),
 
     define_directive: ($) =>
       seq(
-        kw('DEF', 'REDEF'),
+        field('keyword', alias(kw('DEF', 'REDEF'), 'def_kw')),
         field('name', $.identifier),
         choice(
-          seq(kw('EQU', 'EQUS', 'RB', 'RW', 'RL'), $._expression),
+          seq(field('keyword', alias(kw('EQU', 'EQUS', 'RB', 'RW', 'RL'), 'value_kw')), $._expression),
           seq($._assign_op, $._expression),
         ),
       ),
@@ -317,11 +317,11 @@ module.exports = grammar({
     _assign_op: (_$) =>
       choice('=', '+=', '-=', '*=', '/=', '%=', '<<=', '>>=', '&=', '|=', '^='),
 
-    export_directive: ($) => seq(kw('EXPORT'), sepByComma($.identifier)),
+    export_directive: ($) => seq(field('keyword', alias(kw('EXPORT'), 'export_kw')), sepByComma($.identifier)),
 
-    purge_directive: ($) => seq(kw('PURGE'), sepByComma($.identifier)),
+    purge_directive: ($) => seq(field('keyword', alias(kw('PURGE'), 'purge_kw')), sepByComma($.identifier)),
 
-    include_directive: ($) => seq(kw('INCLUDE'), $.string),
+    include_directive: ($) => seq(field('keyword', alias(kw('INCLUDE'), 'include_kw')), $.string),
 
     // Generic fallback for the many simple keyword directives.
     directive: ($) => seq($.directive_keyword, optional($.argument_list)),
