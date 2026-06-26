@@ -2021,6 +2021,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "graphics_constant"
+        },
+        {
+          "type": "SYMBOL",
           "name": "char_constant"
         }
       ]
@@ -2065,6 +2069,13 @@
       "content": {
         "type": "PATTERN",
         "value": "'(\\\\['\"{}\\\\nrt0]|[^'\\\\\\n])'"
+      }
+    },
+    "graphics_constant": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "`[0-3]+"
       }
     },
     "string": {

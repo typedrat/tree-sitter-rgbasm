@@ -263,7 +263,7 @@ module.exports = grammar({
     },
 
     _number: ($) =>
-      choice($.hex, $.octal, $.binary, $.fixed_point, $.decimal, $.char_constant),
+      choice($.hex, $.octal, $.binary, $.fixed_point, $.decimal, $.graphics_constant, $.char_constant),
 
     // Order matters only for documentation; the lexer uses longest-match.
     decimal: ($) => token(/[0-9][0-9_]*/),
@@ -272,6 +272,10 @@ module.exports = grammar({
     binary: ($) => token(/(%|0[bB])[01][01_]*/),
     fixed_point: ($) => token(/[0-9][0-9_]*\.[0-9][0-9_]*([qQ][0-9]+)?/),
     char_constant: ($) => token(/'(\\['"{}\\nrt0]|[^'\\\n])'/),
+
+    // Game Boy 2bpp graphics constant: backtick + pixel digits (default 0-3).
+    // Lenient on width (assembler requires 8); OPT g custom glyphs unsupported.
+    graphics_constant: ($) => token(/`[0-3]+/),
 
     string: ($) =>
       seq('"', repeat(choice($.escape_sequence, $._string_content)), token.immediate('"')),
