@@ -142,3 +142,25 @@ Outer\@:
     (instruction_line
       (instruction
         mnemonic: (mnemonic)))))
+
+==================
+empty-body macro
+==================
+MACRO foo
+ENDM
+---
+
+(source_file
+  (statement (macro_definition name: (identifier))))
+
+==================
+FOR two-arg short form
+==================
+FOR n, 256
+    dw n
+ENDR
+---
+
+(source_file
+  (statement (for_block variable: (identifier) (decimal)
+    (statement (data_directive (argument_list (identifier)))))))

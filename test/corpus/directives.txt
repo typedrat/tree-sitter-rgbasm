@@ -26,3 +26,16 @@ my_macro
   (statement (directive (directive_keyword) (argument_list (string) (binary_expression left: (decimal) right: (decimal)))))
   (statement (macro_invocation name: (identifier) (argument_list (decimal) (decimal))))
   (statement (macro_invocation name: (identifier))))
+
+==================
+REDEF and compound-assign operators
+==================
+REDEF X EQU 2
+DEF Y -= 1
+DEF Z <<= 2
+---
+
+(source_file
+  (statement (define_directive name: (identifier) (decimal)))
+  (statement (define_directive name: (identifier) (decimal)))
+  (statement (define_directive name: (identifier) (decimal))))

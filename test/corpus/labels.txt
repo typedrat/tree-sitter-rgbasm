@@ -14,3 +14,14 @@ Parent.child:
   (statement (label_definition name: (local_label)))
   (statement (label_definition name: (local_label)))
   (statement (label_definition name: (identifier))))
+
+==================
+keyword-prefix label parses as label not keyword
+==================
+ENDM_LOOP:
+    nop
+---
+
+(source_file
+  (statement (label_definition name: (identifier)))
+  (statement (instruction_line (instruction mnemonic: (mnemonic)))))
