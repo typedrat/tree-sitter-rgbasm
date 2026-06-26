@@ -68,7 +68,19 @@ module.exports = grammar({
       ),
 
     // Placeholder body; alternatives added in later tasks.
-    _line_body: ($) => choice($.comment, $.data_directive, $.instruction_line),
+    _line_body: ($) =>
+      choice(
+        $.comment,
+        $.instruction_line,
+        $.data_directive,
+        $.section_directive,
+        $.define_directive,
+        $.export_directive,
+        $.purge_directive,
+        $.include_directive,
+        $.directive,
+        $.macro_invocation,
+      ),
 
     data_directive: ($) =>
       seq(field('keyword', kw('DB', 'DW', 'DL', 'DS')), optional($.argument_list)),
@@ -199,6 +211,65 @@ module.exports = grammar({
       seq('"', repeat(choice($.escape_sequence, $._string_content)), token.immediate('"')),
     _string_content: ($) => token.immediate(prec(1, /[^"\\\n]+/)),
     escape_sequence: ($) => token.immediate(/\\['"{}\\nrt0]/),
+
+    section_directive: ($) =>
+      seq(
+        kw('SECTION'),
+        optional($.section_modifier),
+        field('name', $.string),
+        ',',
+        $.section_type,
+        repeat(seq(',', $.section_constraint)),
+      ),
+
+    section_modifier: ($) => kw('UNION', 'FRAGMENT'),
+
+    section_type: ($) =>
+      seq(
+        kw('ROM0', 'ROMX', 'VRAM', 'SRAM', 'WRAM0', 'WRAMX', 'OAM', 'HRAM'),
+        optional($.section_constraint),
+      ),
+
+    // [addr] / BANK[n] / ALIGN[n] / ALIGN[n,ofs]
+    section_constraint: ($) =>
+      choice(
+        seq('[', $._expression, ']'),
+        seq(kw('BANK'), '[', $._expression, ']'),
+        seq(kw('ALIGN'), '[', sepByComma($._expression), ']'),
+      ),
+
+    define_directive: ($) =>
+      seq(
+        kw('DEF', 'REDEF'),
+        field('name', $.identifier),
+        choice(
+          seq(kw('EQU', 'EQUS', 'RB', 'RW', 'RL'), $._expression),
+          seq($._assign_op, $._expression),
+        ),
+      ),
+
+    _assign_op: (_$) =>
+      choice('=', '+=', '-=', '*=', '/=', '%=', '<<=', '>>=', '&=', '|=', '^='),
+
+    export_directive: ($) => seq(kw('EXPORT'), sepByComma($.identifier)),
+
+    purge_directive: ($) => seq(kw('PURGE'), sepByComma($.identifier)),
+
+    include_directive: ($) => seq(kw('INCLUDE'), $.string),
+
+    // Generic fallback for the many simple keyword directives.
+    directive: ($) => seq($.directive_keyword, optional($.argument_list)),
+
+    directive_keyword: (_$) =>
+      kw(
+        'PRINTLN', 'PRINT', 'INCBIN', 'RSSET', 'RSRESET', 'ASSERT',
+        'STATIC_ASSERT', 'FAIL', 'WARN', 'FATAL', 'OPT', 'PUSHO', 'POPO',
+        'PUSHS', 'POPS', 'PUSHC', 'POPC', 'NEWCHARMAP', 'SETCHARMAP', 'CHARMAP',
+        'SHIFT', 'BREAK', 'ENDSECTION',
+      ),
+
+    macro_invocation: ($) =>
+      seq(field('name', $.identifier), optional($.argument_list)),
 
     label_definition: ($) =>
       choice(

@@ -1,0 +1,28 @@
+==================
+define, export, purge, include, generic directive, macro invocation
+==================
+DEF SCREEN_WIDTH EQU 160
+DEF COUNT = 2
+DEF COUNT += 1
+DEF Name EQUS "text"
+DEF str_field RB 1
+EXPORT Foo, Bar
+PURGE temp
+INCLUDE "irq.inc"
+PRINTLN "hi", 2 + 3
+my_macro 1, 2
+my_macro
+---
+
+(source_file
+  (statement (define_directive name: (identifier) (decimal)))
+  (statement (define_directive name: (identifier) (decimal)))
+  (statement (define_directive name: (identifier) (decimal)))
+  (statement (define_directive name: (identifier) (string)))
+  (statement (define_directive name: (identifier) (decimal)))
+  (statement (export_directive (identifier) (identifier)))
+  (statement (purge_directive (identifier)))
+  (statement (include_directive (string)))
+  (statement (directive (directive_keyword) (argument_list (string) (binary_expression left: (decimal) right: (decimal)))))
+  (statement (macro_invocation name: (identifier) (argument_list (decimal) (decimal))))
+  (statement (macro_invocation name: (identifier))))
