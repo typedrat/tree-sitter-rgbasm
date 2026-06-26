@@ -77,6 +77,10 @@
           "named": true
         },
         {
+          "type": "raw_string",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -157,6 +161,10 @@
           },
           {
             "type": "program_counter",
+            "named": true
+          },
+          {
+            "type": "raw_string",
             "named": true
           },
           {
@@ -332,6 +340,10 @@
             "named": true
           },
           {
+            "type": "raw_string",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
@@ -493,6 +505,10 @@
           "named": true
         },
         {
+          "type": "raw_string",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -592,6 +608,10 @@
           },
           {
             "type": "program_counter",
+            "named": true
+          },
+          {
+            "type": "raw_string",
             "named": true
           },
           {
@@ -722,6 +742,10 @@
         },
         {
           "type": "program_counter",
+          "named": true
+        },
+        {
+          "type": "raw_string",
           "named": true
         },
         {
@@ -859,6 +883,10 @@
           "named": true
         },
         {
+          "type": "raw_string",
+          "named": true
+        },
+        {
           "type": "statement",
           "named": true
         },
@@ -946,6 +974,10 @@
             "named": true
           },
           {
+            "type": "raw_string",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
@@ -1008,6 +1040,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "raw_string",
+          "named": true
+        },
         {
           "type": "string",
           "named": true
@@ -1111,6 +1147,10 @@
           "named": true
         },
         {
+          "type": "raw_string",
+          "named": true
+        },
+        {
           "type": "register",
           "named": true
         },
@@ -1206,6 +1246,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "raw_string",
+            "named": true
+          },
           {
             "type": "string",
             "named": true
@@ -1367,6 +1411,10 @@
           "named": true
         },
         {
+          "type": "raw_string",
+          "named": true
+        },
+        {
           "type": "register",
           "named": true
         },
@@ -1484,6 +1532,10 @@
           "named": true
         },
         {
+          "type": "raw_string",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -1590,6 +1642,10 @@
           },
           {
             "type": "program_counter",
+            "named": true
+          },
+          {
+            "type": "raw_string",
             "named": true
           },
           {
@@ -1716,6 +1772,10 @@
           "named": true
         },
         {
+          "type": "raw_string",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -1744,6 +1804,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "raw_string",
+            "named": true
+          },
           {
             "type": "string",
             "named": true
@@ -1988,6 +2052,10 @@
         },
         {
           "type": "program_counter",
+          "named": true
+        },
+        {
+          "type": "raw_string",
           "named": true
         },
         {
@@ -2351,6 +2419,10 @@
   {
     "type": "purge_kw",
     "named": false
+  },
+  {
+    "type": "raw_string",
+    "named": true
   },
   {
     "type": "register",

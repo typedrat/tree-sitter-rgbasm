@@ -133,7 +133,7 @@ module.exports = grammar({
       seq(
         field('keyword', alias(kw('LOAD'), 'load_kw')),
         optional(field('modifier', $.section_modifier)),
-        field('name', $.string),
+        field('name', $._string),
         ',',
         $.section_type,
         blockBody($),
@@ -214,6 +214,7 @@ module.exports = grammar({
       choice(
         $._number,
         $.string,
+        $.raw_string,
         $._label_ref,
         $.identifier,
         $.local_label,
@@ -287,11 +288,17 @@ module.exports = grammar({
     _string_content: ($) => token.immediate(prec(1, /[^"\\\n]+/)),
     escape_sequence: ($) => token.immediate(/\\['"{}\\nrt0]/),
 
+    // Raw string: opaque, no escapes or interpolation. Cannot contain '"'.
+    raw_string: ($) => token(/#"[^"\n]*"/),
+
+    // All single-line string forms. Extended with multi-line forms in later tasks.
+    _string: ($) => choice($.string, $.raw_string),
+
     section_directive: ($) =>
       seq(
         field('keyword', alias(kw('SECTION'), 'section_kw')),
         optional($.section_modifier),
-        field('name', $.string),
+        field('name', $._string),
         ',',
         $.section_type,
         repeat(seq(',', $.section_constraint)),
@@ -330,7 +337,7 @@ module.exports = grammar({
 
     purge_directive: ($) => seq(field('keyword', alias(kw('PURGE'), 'purge_kw')), sepByComma($.identifier)),
 
-    include_directive: ($) => seq(field('keyword', alias(kw('INCLUDE'), 'include_kw')), $.string),
+    include_directive: ($) => seq(field('keyword', alias(kw('INCLUDE'), 'include_kw')), $._string),
 
     // Generic fallback for the many simple keyword directives.
     directive: ($) => seq($.directive_keyword, optional($.argument_list)),

@@ -9,3 +9,15 @@ DB "hi\n", "a\"b"
     (argument_list
       (string (escape_sequence))
       (string (escape_sequence))))))
+
+==================
+raw string
+==================
+DB #"\t\1{s}", "x"
+INCLUDE #"path\to\file.inc"
+---
+
+(source_file
+  (statement (data_directive
+    (argument_list (raw_string) (string))))
+  (statement (include_directive (raw_string))))
