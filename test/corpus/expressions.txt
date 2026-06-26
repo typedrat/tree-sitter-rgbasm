@@ -11,7 +11,7 @@ DB 1 + 2 * 3, HIGH($1234), -x ** 2, (a | b) << 1
         left: (decimal)
         right: (binary_expression left: (decimal) right: (decimal)))
       (call_expression function: (identifier) (argument_list (hex)))
-      (exp_expression (unary_expression (identifier)) (decimal))
+      (unary_expression (exp_expression (identifier) (decimal)))
       (binary_expression
         left: (parenthesized_expression (binary_expression left: (identifier) right: (identifier)))
         right: (decimal))))))

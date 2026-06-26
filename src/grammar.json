@@ -277,7 +277,7 @@
     },
     "unary_expression": {
       "type": "PREC",
-      "value": 9,
+      "value": 8,
       "content": {
         "type": "SEQ",
         "members": [
@@ -315,7 +315,7 @@
     },
     "exp_expression": {
       "type": "PREC_RIGHT",
-      "value": 8,
+      "value": 9,
       "content": {
         "type": "SEQ",
         "members": [

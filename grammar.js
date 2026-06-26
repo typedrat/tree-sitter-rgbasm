@@ -32,8 +32,8 @@ const PREC = {
   bitwise: 5,
   shift: 6,
   mul: 7,
-  exp: 8,
-  unary: 9,
+  exp: 9,
+  unary: 8,
   call: 10,
 };
 
