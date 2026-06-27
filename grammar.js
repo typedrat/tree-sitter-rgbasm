@@ -47,6 +47,15 @@ const PREC = {
 module.exports = grammar({
   name: 'rgbasm',
 
+  // identifier at the start of a line is ambiguous between the name field of
+  // a _symbol-using rule (macro_invocation, define_directive, …) and the
+  // identifier that begins a label_definition.  Tree-sitter uses the
+  // next-token lookahead (e.g. ':', '::', a mnemonic following the name) to
+  // pick the right interpretation at runtime.
+  conflicts: ($) => [
+    [$._symbol, $.label_definition],
+  ],
+
   extras: ($) => [
     /[ \t]/, // horizontal whitespace
     /\\\r?\n/, // line continuation: backslash + newline
@@ -94,7 +103,7 @@ module.exports = grammar({
       ),
 
     macro_definition: ($) =>
-      seq(field('keyword', alias(kw('MACRO'), 'macro_kw')), field('name', $.identifier), blockBody($), field('keyword', alias(kw('ENDM'), 'endm_kw'))),
+      seq(field('keyword', alias(kw('MACRO'), 'macro_kw')), field('name', $._symbol), blockBody($), field('keyword', alias(kw('ENDM'), 'endm_kw'))),
 
     rept_block: ($) =>
       seq(field('keyword', alias(kw('REPT'), 'rept_kw')), field('count', $._expression), blockBody($), field('keyword', alias(kw('ENDR'), 'endr_kw'))),
@@ -217,6 +226,8 @@ module.exports = grammar({
         $.raw_string,
         $._label_ref,
         $.identifier,
+        $.interpolation,
+        $.interpolated_identifier,
         $.local_label,
         $.program_counter,
         $.anonymous_label_ref,
@@ -307,6 +318,30 @@ module.exports = grammar({
     // All single-line string forms. Extended with multi-line forms in later tasks.
     _string: ($) => choice($.string, $.raw_string),
 
+    // A symbol name: a plain identifier, a bare {interpolation}, or an
+    // identifier/interpolation head glued (no whitespace) to more pieces.
+    _symbol: ($) => choice($.identifier, $.interpolation, $.interpolated_identifier),
+
+    // Head (identifier or interpolation) followed by ≥1 immediate pieces with
+    // no intervening whitespace.  Aliases _immediate_interpolation to $.interpolation
+    // so the child node type is uniform regardless of whether whitespace was
+    // legal at that position.
+    interpolated_identifier: ($) =>
+      seq(
+        choice($.identifier, $.interpolation),
+        repeat1(choice(
+          alias($._immediate_interpolation, $.interpolation),
+          $._immediate_id_fragment,
+        )),
+      ),
+
+    // token.immediate prevents any whitespace between the closing '}' of the
+    // prior token and this '{'.
+    _immediate_interpolation: ($) =>
+      seq(token.immediate('{'), optional($.format_spec), $._interp_symbol, '}'),
+
+    _immediate_id_fragment: ($) => token.immediate(/[A-Za-z0-9_#$@.]+/),
+
     section_directive: ($) =>
       seq(
         field('keyword', alias(kw('SECTION'), 'section_kw')),
@@ -336,7 +371,7 @@ module.exports = grammar({
     define_directive: ($) =>
       seq(
         field('keyword', alias(kw('DEF', 'REDEF'), 'def_kw')),
-        field('name', $.identifier),
+        field('name', $._symbol),
         choice(
           seq(field('keyword', alias(kw('EQU', 'EQUS', 'RB', 'RW', 'RL'), 'value_kw')), $._expression),
           seq($._assign_op, $._expression),
@@ -346,9 +381,9 @@ module.exports = grammar({
     _assign_op: (_$) =>
       choice('=', '+=', '-=', '*=', '/=', '%=', '<<=', '>>=', '&=', '|=', '^='),
 
-    export_directive: ($) => seq(field('keyword', alias(kw('EXPORT'), 'export_kw')), sepByComma($.identifier)),
+    export_directive: ($) => seq(field('keyword', alias(kw('EXPORT'), 'export_kw')), sepByComma($._symbol)),
 
-    purge_directive: ($) => seq(field('keyword', alias(kw('PURGE'), 'purge_kw')), sepByComma($.identifier)),
+    purge_directive: ($) => seq(field('keyword', alias(kw('PURGE'), 'purge_kw')), sepByComma($._symbol)),
 
     include_directive: ($) => seq(field('keyword', alias(kw('INCLUDE'), 'include_kw')), $._string),
 
@@ -364,7 +399,7 @@ module.exports = grammar({
       ),
 
     macro_invocation: ($) =>
-      seq(field('name', $.identifier), optional($.argument_list)),
+      seq(field('name', $._symbol), optional($.argument_list)),
 
     label_definition: ($) =>
       choice(

@@ -39,3 +39,21 @@ DEF Z <<= 2
   (statement (define_directive name: (identifier) (decimal)))
   (statement (define_directive name: (identifier) (decimal)))
   (statement (define_directive name: (identifier) (decimal))))
+
+==================
+interpolated symbol names
+==================
+DEF {name} = 1
+PURGE {prefix}_table
+MACRO {macro_name}
+ENDM
+---
+
+(source_file
+  (statement (define_directive
+    (interpolation)
+    (decimal)))
+  (statement (purge_directive
+    (interpolated_identifier (interpolation))))
+  (statement (macro_definition
+    (interpolation))))

@@ -15,3 +15,14 @@ DB 1 + 2 * 3, HIGH($1234), -x ** 2, (a | b) << 1
       (binary_expression
         left: (parenthesized_expression (binary_expression left: (identifier) right: (identifier)))
         right: (decimal))))))
+
+==================
+interpolated identifier reference
+==================
+DB Color{i}_data
+---
+
+(source_file
+  (statement (data_directive
+    (argument_list
+      (interpolated_identifier (identifier) (interpolation))))))

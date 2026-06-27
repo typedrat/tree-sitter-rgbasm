@@ -180,7 +180,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "_symbol"
           }
         },
         {
@@ -1527,6 +1527,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "interpolation"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "interpolated_identifier"
+        },
+        {
+          "type": "SYMBOL",
           "name": "local_label"
         },
         {
@@ -2230,6 +2238,101 @@
         }
       ]
     },
+    "_symbol": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "interpolation"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "interpolated_identifier"
+        }
+      ]
+    },
+    "interpolated_identifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "interpolation"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_immediate_interpolation"
+                },
+                "named": true,
+                "value": "interpolation"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_immediate_id_fragment"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "_immediate_interpolation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "{"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "format_spec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_interp_symbol"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "_immediate_id_fragment": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[A-Za-z0-9_#$@.]+"
+      }
+    },
     "section_directive": {
       "type": "SEQ",
       "members": [
@@ -2525,7 +2628,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "_symbol"
           }
         },
         {
@@ -2672,7 +2775,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "identifier"
+              "name": "_symbol"
             },
             {
               "type": "REPEAT",
@@ -2685,7 +2788,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "identifier"
+                    "name": "_symbol"
                   }
                 ]
               }
@@ -2723,7 +2826,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "identifier"
+              "name": "_symbol"
             },
             {
               "type": "REPEAT",
@@ -2736,7 +2839,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "identifier"
+                    "name": "_symbol"
                   }
                 ]
               }
@@ -2904,7 +3007,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "_symbol"
           }
         },
         {
@@ -3073,7 +3176,12 @@
       "name": "block_comment"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "_symbol",
+      "label_definition"
+    ]
+  ],
   "precedences": [],
   "externals": [],
   "inline": [],
