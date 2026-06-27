@@ -92,6 +92,7 @@ module.exports = grammar({
         $.export_directive,
         $.purge_directive,
         $.include_directive,
+        $.charmap_directive,
         $.directive,
         $.macro_definition,
         $.rept_block,
@@ -387,6 +388,15 @@ module.exports = grammar({
 
     include_directive: ($) => seq(field('keyword', alias(kw('INCLUDE'), 'include_kw')), $._string),
 
+    charmap_directive: ($) =>
+      choice(
+        seq(field('keyword', alias(kw('CHARMAP'), 'charmap_kw')), field('mapping', $._string), ',', sepByComma($._expression)),
+        seq(field('keyword', alias(kw('NEWCHARMAP'), 'newcharmap_kw')), field('name', $._symbol), optional(seq(',', field('base', $._symbol)))),
+        seq(field('keyword', alias(kw('SETCHARMAP'), 'setcharmap_kw')), field('name', $._symbol)),
+        seq(field('keyword', alias(kw('PUSHC'), 'pushc_kw')), optional(field('name', $._symbol))),
+        field('keyword', alias(kw('POPC'), 'popc_kw')),
+      ),
+
     // Generic fallback for the many simple keyword directives.
     directive: ($) => seq($.directive_keyword, optional($.argument_list)),
 
@@ -394,8 +404,7 @@ module.exports = grammar({
       kw(
         'PRINTLN', 'PRINT', 'INCBIN', 'RSSET', 'RSRESET', 'ASSERT',
         'STATIC_ASSERT', 'FAIL', 'WARN', 'FATAL', 'OPT', 'PUSHO', 'POPO',
-        'PUSHS', 'POPS', 'PUSHC', 'POPC', 'NEWCHARMAP', 'SETCHARMAP', 'CHARMAP',
-        'SHIFT', 'BREAK', 'ENDSECTION',
+        'PUSHS', 'POPS', 'SHIFT', 'BREAK', 'ENDSECTION',
       ),
 
     macro_invocation: ($) =>

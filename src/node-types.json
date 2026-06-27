@@ -406,6 +406,178 @@
     }
   },
   {
+    "type": "charmap_directive",
+    "named": true,
+    "fields": {
+      "base": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "interpolated_identifier",
+            "named": true
+          },
+          {
+            "type": "interpolation",
+            "named": true
+          }
+        ]
+      },
+      "keyword": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "charmap_kw",
+            "named": false
+          },
+          {
+            "type": "newcharmap_kw",
+            "named": false
+          },
+          {
+            "type": "popc_kw",
+            "named": false
+          },
+          {
+            "type": "pushc_kw",
+            "named": false
+          },
+          {
+            "type": "setcharmap_kw",
+            "named": false
+          }
+        ]
+      },
+      "mapping": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "raw_string",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "interpolated_identifier",
+            "named": true
+          },
+          {
+            "type": "interpolation",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "anonymous_label_ref",
+          "named": true
+        },
+        {
+          "type": "binary",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "char_constant",
+          "named": true
+        },
+        {
+          "type": "decimal",
+          "named": true
+        },
+        {
+          "type": "exp_expression",
+          "named": true
+        },
+        {
+          "type": "fixed_point",
+          "named": true
+        },
+        {
+          "type": "graphics_constant",
+          "named": true
+        },
+        {
+          "type": "hex",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "interpolated_identifier",
+          "named": true
+        },
+        {
+          "type": "interpolation",
+          "named": true
+        },
+        {
+          "type": "local_label",
+          "named": true
+        },
+        {
+          "type": "macro_argument",
+          "named": true
+        },
+        {
+          "type": "octal",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "program_counter",
+          "named": true
+        },
+        {
+          "type": "raw_string",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "data_directive",
     "named": true,
     "fields": {
@@ -2056,6 +2228,10 @@
       "required": true,
       "types": [
         {
+          "type": "charmap_directive",
+          "named": true
+        },
+        {
           "type": "comment",
           "named": true
         },
@@ -2495,6 +2671,10 @@
     "named": true
   },
   {
+    "type": "charmap_kw",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true
   },
@@ -2607,6 +2787,10 @@
     "named": true
   },
   {
+    "type": "newcharmap_kw",
+    "named": false
+  },
+  {
     "type": "nextu_kw",
     "named": false
   },
@@ -2615,11 +2799,19 @@
     "named": true
   },
   {
+    "type": "popc_kw",
+    "named": false
+  },
+  {
     "type": "program_counter",
     "named": true
   },
   {
     "type": "purge_kw",
+    "named": false
+  },
+  {
+    "type": "pushc_kw",
     "named": false
   },
   {
@@ -2645,6 +2837,10 @@
   {
     "type": "section_modifier",
     "named": true
+  },
+  {
+    "type": "setcharmap_kw",
+    "named": false
   },
   {
     "type": "union_kw",

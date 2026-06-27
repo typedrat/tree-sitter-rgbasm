@@ -57,3 +57,26 @@ ENDM
     (interpolated_identifier (interpolation))))
   (statement (macro_definition
     (interpolation))))
+
+==================
+charmap directives
+==================
+CHARMAP "A", 42
+CHARMAP "<br>", 13, 10
+NEWCHARMAP main
+NEWCHARMAP copy, main
+SETCHARMAP main
+PUSHC
+PUSHC main
+POPC
+---
+
+(source_file
+  (statement (charmap_directive (string) (decimal)))
+  (statement (charmap_directive (string) (decimal) (decimal)))
+  (statement (charmap_directive (identifier)))
+  (statement (charmap_directive (identifier) (identifier)))
+  (statement (charmap_directive (identifier)))
+  (statement (charmap_directive))
+  (statement (charmap_directive (identifier)))
+  (statement (charmap_directive)))
