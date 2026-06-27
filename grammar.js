@@ -284,9 +284,22 @@ module.exports = grammar({
     graphics_constant: ($) => token(/`[0-3]+/),
 
     string: ($) =>
-      seq('"', repeat(choice($.escape_sequence, $._string_content)), token.immediate('"')),
-    _string_content: ($) => token.immediate(prec(1, /[^"\\\n]+/)),
+      seq(
+        '"',
+        repeat(choice($._string_content, $.escape_sequence, $.interpolation, $.macro_argument)),
+        token.immediate('"'),
+      ),
+    // Now also breaks on '{' so interpolation can start.
+    _string_content: ($) => token.immediate(prec(1, /[^"\\{\n]+/)),
     escape_sequence: ($) => token.immediate(/\\['"{}\\nrt0]/),
+
+    // {sym} or {fmt:sym}; nests as {{sym}} / {fmt:{sym}}.
+    interpolation: ($) => seq('{', optional($.format_spec), $._interp_symbol, '}'),
+    // The format spec swallows its trailing ':' so {X} (symbol) and {x:Y}
+    // (fmt + symbol) disambiguate at the lexer with no conflict.
+    format_spec: ($) => token(/[+ ]?#?-?0?[0-9]*(\.[0-9]+)?(q[0-9]+)?[duxXbofs]:/),
+    _interp_symbol: ($) => repeat1(choice($._interp_name_part, $.interpolation)),
+    _interp_name_part: ($) => token(/[A-Za-z0-9_#$@.]+/),
 
     // Raw string: opaque, no escapes or interpolation. Cannot contain '"'.
     raw_string: ($) => token(/#"[^"\n]*"/),

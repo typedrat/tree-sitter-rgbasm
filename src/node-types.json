@@ -1181,6 +1181,25 @@
     }
   },
   {
+    "type": "interpolation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "format_spec",
+          "named": true
+        },
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "label_definition",
     "named": true,
     "fields": {
@@ -1955,6 +1974,14 @@
         {
           "type": "escape_sequence",
           "named": true
+        },
+        {
+          "type": "interpolation",
+          "named": true
+        },
+        {
+          "type": "macro_argument",
+          "named": true
         }
       ]
     }
@@ -2365,6 +2392,10 @@
     "named": false
   },
   {
+    "type": "format_spec",
+    "named": true
+  },
+  {
     "type": "graphics_constant",
     "named": true
   },
@@ -2453,6 +2484,10 @@
     "named": false
   },
   {
+    "type": "{",
+    "named": false
+  },
+  {
     "type": "|",
     "named": false
   },
@@ -2462,6 +2497,10 @@
   },
   {
     "type": "||",
+    "named": false
+  },
+  {
+    "type": "}",
     "named": false
   },
   {

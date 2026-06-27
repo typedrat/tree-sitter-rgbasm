@@ -2107,11 +2107,19 @@
             "members": [
               {
                 "type": "SYMBOL",
+                "name": "_string_content"
+              },
+              {
+                "type": "SYMBOL",
                 "name": "escape_sequence"
               },
               {
                 "type": "SYMBOL",
-                "name": "_string_content"
+                "name": "interpolation"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "macro_argument"
               }
             ]
           }
@@ -2132,7 +2140,7 @@
         "value": 1,
         "content": {
           "type": "PATTERN",
-          "value": "[^\"\\\\\\n]+"
+          "value": "[^\"\\\\{\\n]+"
         }
       }
     },
@@ -2141,6 +2149,65 @@
       "content": {
         "type": "PATTERN",
         "value": "\\\\['\"{}\\\\nrt0]"
+      }
+    },
+    "interpolation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "format_spec"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_interp_symbol"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "format_spec": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[+ ]?#?-?0?[0-9]*(\\.[0-9]+)?(q[0-9]+)?[duxXbofs]:"
+      }
+    },
+    "_interp_symbol": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_interp_name_part"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "interpolation"
+          }
+        ]
+      }
+    },
+    "_interp_name_part": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[A-Za-z0-9_#$@.]+"
       }
     },
     "raw_string": {

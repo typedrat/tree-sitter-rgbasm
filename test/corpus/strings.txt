@@ -21,3 +21,19 @@ INCLUDE #"path\to\file.inc"
   (statement (data_directive
     (argument_list (raw_string) (string))))
   (statement (include_directive (raw_string))))
+
+==================
+string interpolation
+==================
+PRINTLN "sum = {d:TOTAL}"
+PRINTLN "raw {SYM} and {{nested}} and arg \1"
+---
+
+(source_file
+  (statement (directive (directive_keyword)
+    (argument_list (string (interpolation (format_spec))))))
+  (statement (directive (directive_keyword)
+    (argument_list (string
+      (interpolation)
+      (interpolation (interpolation))
+      (macro_argument))))))
