@@ -47,12 +47,18 @@ pub const LOCALS_QUERY: &str = include_str!("../../queries/locals.scm");
 /// The symbol tagging query for this grammar.
 pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
 
+/// Runtime traits and helpers for the generated typed AST, re-exported so
+/// consumers need only depend on this crate (not `treesitter-types` directly):
+/// [`FromNode`] constructs a typed node, [`Spanned`] gives source location,
+/// [`LeafNode`] gives a terminal's text, and [`ParseError`]/[`Span`] are the
+/// supporting types.
+pub use treesitter_types::{FromNode, LeafNode, ParseError, Span, Spanned};
+
 // Strongly-typed AST structs and enums generated from `node-types.json` at
 // build time (see build.rs). Named nodes become structs, supertypes become
 // enums, optional fields are `Option<T>`, repeated fields are `Vec<T>`.
 // Construct the root with `SourceFile::from_node` and walk via the generated
-// accessors. Runtime traits and the matching `tree_sitter` re-export come from
-// the `treesitter-types` crate.
+// accessors.
 include!(concat!(env!("OUT_DIR"), "/treesitter_types_generated.rs"));
 
 #[cfg(test)]
@@ -67,7 +73,7 @@ mod tests {
 
     #[test]
     fn typed_ast_root_exposes_statements() {
-        use treesitter_types::FromNode;
+        use super::FromNode;
 
         let src = b"nop\n";
         let mut parser = tree_sitter::Parser::new();
