@@ -16,6 +16,7 @@ triple-quoted raw strings (`#"""…"""`), symbol interpolation (`{fmt:sym}`) ins
 name-building positions (`DEF {name}`, `Color{i}_data`), macro-arg tokens inside strings
 (`\1`–`\9`, `\@`, `\#`), and structured charmap directives
 (`CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC`), and inline fragment literals (`[[ … ]]`).
+The `::` separator chains data directives as well as instructions (`db 1 :: db 2`).
 
 ### Known limitations
 
