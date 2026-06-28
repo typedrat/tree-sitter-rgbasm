@@ -97,8 +97,8 @@ Add the rule:
 fragment_literal: ($) =>
   seq(
     '[[',
+    repeat('\n'),
     optional(seq(
-      repeat('\n'),
       $.statement,
       repeat(seq(repeat1('\n'), $.statement)),
       repeat('\n'),
