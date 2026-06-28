@@ -13,17 +13,17 @@
 (program_counter) @constant.builtin
 
 ; All directive/block keywords (MACRO/ENDM/IF/ENDC/FOR/ENDR/etc.)
-(_ keyword: _ @preproc)
+(_ keyword: _ @keyword)
 
 ; Generic directives (PRINT/ASSERT/OPT/WARN/...)
-(directive_keyword) @preproc
+(directive_keyword) @keyword
 
 ; Section type and modifier
 (section_type) @constant.builtin
 (section_modifier) @keyword
 
-; Labels — more specific than bare (identifier) @variable
-(label_definition name: (identifier) @label)
+; Global labels read as function/data entry points; locals stay @label.
+(label_definition name: (identifier) @function)
 (label_definition name: (local_label) @label)
 (anonymous_label) @label
 (anonymous_label_ref) @label

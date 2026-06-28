@@ -22,8 +22,8 @@
 (section_type) @type.builtin
 (section_modifier) @keyword.directive
 
-; Labels — more specific than bare (identifier) @variable
-(label_definition name: (identifier) @label)
+; Global labels read as function/data entry points; locals stay @label.
+(label_definition name: (identifier) @function)
 (label_definition name: (local_label) @label)
 (anonymous_label) @label
 (anonymous_label_ref) @label

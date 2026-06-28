@@ -430,7 +430,7 @@ module.exports = grammar({
       kw(
         'PRINTLN', 'PRINT', 'INCBIN', 'RSSET', 'RSRESET', 'ASSERT',
         'STATIC_ASSERT', 'FAIL', 'WARN', 'FATAL', 'OPT', 'PUSHO', 'POPO',
-        'PUSHS', 'POPS', 'SHIFT', 'BREAK', 'ENDSECTION',
+        'PUSHS', 'POPS', 'SHIFT', 'BREAK', 'ENDSECTION', 'ALIGN',
       ),
 
     macro_invocation: ($) =>

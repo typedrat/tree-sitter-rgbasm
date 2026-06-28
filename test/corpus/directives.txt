@@ -59,6 +59,17 @@ ENDM
     (interpolation))))
 
 ==================
+standalone ALIGN directive
+==================
+ALIGN 8
+ALIGN 8, 2
+---
+
+(source_file
+  (statement (directive (directive_keyword) (argument_list (decimal))))
+  (statement (directive (directive_keyword) (argument_list (decimal) (decimal)))))
+
+==================
 charmap directives
 ==================
 CHARMAP "A", 42
