@@ -25,6 +25,8 @@
 ; Labels — more specific than bare (identifier) @variable
 (label_definition name: (identifier) @label)
 (label_definition name: (local_label) @label)
+(anonymous_label) @label
+(anonymous_label_ref) @label
 
 ; Macro invocation name
 (macro_invocation name: (identifier) @function)
@@ -45,11 +47,16 @@
 (octal) @number
 (binary) @number
 (fixed_point) @number
+(graphics_constant) @number
 (char_constant) @string.special
 
 ; String literals
 (string) @string
+(raw_string) @string
+(multiline_string) @string
+(raw_multiline_string) @string
 (escape_sequence) @string.escape
+(format_spec) @string.special
 
 ; Operators
 (binary_expression operator: _ @operator)
@@ -58,3 +65,4 @@
 ; Punctuation
 ["[" "]" "(" ")"] @punctuation.bracket
 ["," ":" "::"] @punctuation.delimiter
+(interpolation) @punctuation.special
