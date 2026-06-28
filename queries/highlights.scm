@@ -64,5 +64,6 @@
 
 ; Punctuation
 ["[" "]" "(" ")"] @punctuation.bracket
+["[[" "]]"] @punctuation.bracket
 ["," ":" "::"] @punctuation.delimiter
 (interpolation) @punctuation.special

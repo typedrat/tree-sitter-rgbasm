@@ -4,6 +4,7 @@
 (rept_block) @function.around @function.outer
 (for_block) @function.around @function.outer
 (if_block) @function.around @function.outer
+(fragment_literal) @function.around @function.outer
 (section_directive) @class.around @class.outer
 
 (comment) @comment.around @comment.outer
