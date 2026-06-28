@@ -21,7 +21,6 @@ name-building positions (`DEF {name}`, `Color{i}_data`), macro-arg tokens inside
 
 - **Fragment literals `[[ … ]]`** — these embed full statements inside an expression position,
   which conflicts with the grammar's line-oriented model; deferred to a later phase.
-- Symbol-interpolation and macro-arg *semantics* (assembler-time text expansion) are not modeled.
 
 ## Build & test
 

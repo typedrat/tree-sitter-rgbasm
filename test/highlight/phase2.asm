@@ -5,8 +5,8 @@ CHARMAP "A", 42
 NEWCHARMAP custom, main
 
 Greeting:
-    PRINTLN "Hi {WHO}, sum={d:TOTAL}"
-    DB #"raw \1 {literal}"
+    PRINTLN "Hi {WHO}, sum={d:TOTAL}, arg=\1"
+    DB #"raw {literal}"
     DB """multi
 line {x:N}"""
 
