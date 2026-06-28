@@ -68,16 +68,18 @@ module.exports = grammar({
         ),
       ),
 
+    // A line comment may trail any statement (rgbasm(5)); the bare-comment
+    // branch keeps comment-only lines as standalone statements. Keeping the
+    // comment out of `_line_body` avoids a `label: ; text` double-parse.
     statement: ($) =>
       choice(
-        seq($.label_definition, optional($._line_body)),
-        $._line_body,
+        seq($.label_definition, optional($._line_body), optional($.comment)),
+        seq($._line_body, optional($.comment)),
+        $.comment,
       ),
 
-    // Placeholder body; alternatives added in later tasks.
     _line_body: ($) =>
       choice(
-        $.comment,
         $._code_line,
         $.section_directive,
         $.define_directive,
