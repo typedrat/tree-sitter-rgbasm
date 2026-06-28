@@ -1522,21 +1522,6 @@
     }
   },
   {
-    "type": "instruction_line",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "instruction",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "interpolated_identifier",
     "named": true,
     "fields": {},
@@ -2405,7 +2390,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "charmap_directive",
@@ -2444,7 +2429,7 @@
           "named": true
         },
         {
-          "type": "instruction_line",
+          "type": "instruction",
           "named": true
         },
         {

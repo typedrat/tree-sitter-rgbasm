@@ -22,9 +22,9 @@ ENDL
 
 (source_file
   (statement (macro_definition name: (identifier)
-    (statement (instruction_line (instruction mnemonic: (mnemonic) (macro_argument) (macro_argument))))))
+    (statement (instruction mnemonic: (mnemonic) (macro_argument) (macro_argument)))))
   (statement (rept_block count: (decimal)
-    (statement (instruction_line (instruction mnemonic: (mnemonic) (register) (register))))))
+    (statement (instruction mnemonic: (mnemonic) (register) (register)))))
   (statement (for_block variable: (identifier) (decimal) (decimal) (decimal)
     (statement (data_directive (argument_list (identifier))))))
   (statement (union_block
@@ -32,7 +32,7 @@ ENDL
     (nextu_clause
       (statement (label_definition name: (identifier)) (data_directive (argument_list (decimal)))))))
   (statement (load_block name: (string) (section_type)
-    (statement (instruction_line (instruction mnemonic: (mnemonic) (register) (register)))))))
+    (statement (instruction mnemonic: (mnemonic) (register) (register))))))
 
 ==================
 macro arguments inside expressions
@@ -53,16 +53,15 @@ ENDM
   (statement
     (macro_definition name: (identifier)
       (statement
-        (instruction_line
-          (instruction mnemonic: (mnemonic)
-            (macro_argument)
-            (binary_expression
-              left: (binary_expression
-                left: (parenthesized_expression
-                  (macro_argument))
-                right: (decimal))
-              right: (parenthesized_expression
-                (macro_argument))))))))
+        (instruction mnemonic: (mnemonic)
+          (macro_argument)
+          (binary_expression
+            left: (binary_expression
+              left: (parenthesized_expression
+                (macro_argument))
+              right: (decimal))
+            right: (parenthesized_expression
+              (macro_argument)))))))
   (statement
     (macro_definition name: (identifier)
       (statement
@@ -106,42 +105,37 @@ Outer\@:
     (macro_definition
       name: (identifier)
       (statement
-        (instruction_line
-          (instruction
-            mnemonic: (mnemonic)
-            (register)
-            (register))))
+        (instruction
+          mnemonic: (mnemonic)
+          (register)
+          (register)))
       (statement
         (label_definition
           name: (local_label)
           (macro_argument)))
       (statement
-        (instruction_line
-          (instruction
-            mnemonic: (mnemonic)
-            (mem_access
-              (register_increment))
-            (register))))
+        (instruction
+          mnemonic: (mnemonic)
+          (mem_access
+            (register_increment))
+          (register)))
       (statement
-        (instruction_line
-          (instruction
-            mnemonic: (mnemonic)
-            (register))))
+        (instruction
+          mnemonic: (mnemonic)
+          (register)))
       (statement
-        (instruction_line
-          (instruction
-            mnemonic: (branch_mnemonic)
-            (condition_code)
-            (local_label)
-            (macro_argument))))))
+        (instruction
+          mnemonic: (branch_mnemonic)
+          (condition_code)
+          (local_label)
+          (macro_argument)))))
   (statement
     (label_definition
       name: (identifier)
       (macro_argument)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)))))
+    (instruction
+      mnemonic: (mnemonic))))
 
 ==================
 empty-body macro

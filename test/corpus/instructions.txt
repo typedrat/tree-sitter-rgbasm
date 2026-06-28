@@ -11,12 +11,27 @@ instructions, operands, mem access, double-colon, macro args
 ---
 
 (source_file
-  (statement (instruction_line (instruction (mnemonic))))
-  (statement (instruction_line (instruction (mnemonic) (register) (mem_access (register)))))
-  (statement (instruction_line (instruction (mnemonic) (mem_access (register_increment)) (register))))
-  (statement (instruction_line (instruction (mnemonic) (register) (hex))))
-  (statement (instruction_line (instruction (mnemonic) (register))))
-  (statement (instruction_line
+  (statement (instruction (mnemonic)))
+  (statement (instruction (mnemonic) (register) (mem_access (register))))
+  (statement (instruction (mnemonic) (mem_access (register_increment)) (register)))
+  (statement (instruction (mnemonic) (register) (hex)))
+  (statement (instruction (mnemonic) (register)))
+  (statement
     (instruction (mnemonic) (register) (register))
-    (instruction (mnemonic) (register) (register))))
-  (statement (instruction_line (instruction (mnemonic) (macro_argument) (macro_argument)))))
+    (instruction (mnemonic) (register) (register)))
+  (statement (instruction (mnemonic) (macro_argument) (macro_argument))))
+
+==================
+double-colon data and mixed
+==================
+    db 1 :: db 2
+    ld a, b :: db 3
+---
+
+(source_file
+  (statement
+    (data_directive (argument_list (decimal)))
+    (data_directive (argument_list (decimal))))
+  (statement
+    (instruction (mnemonic) (register) (register))
+    (data_directive (argument_list (decimal)))))

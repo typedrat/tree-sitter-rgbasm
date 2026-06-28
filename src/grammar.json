@@ -91,11 +91,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "instruction_line"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "data_directive"
+          "name": "_code_line"
         },
         {
           "type": "SYMBOL",
@@ -996,12 +992,12 @@
         }
       ]
     },
-    "instruction_line": {
+    "_code_line": {
       "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "instruction"
+          "name": "_code_element"
         },
         {
           "type": "REPEAT",
@@ -1014,10 +1010,23 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "instruction"
+                "name": "_code_element"
               }
             ]
           }
+        }
+      ]
+    },
+    "_code_element": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "instruction"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "data_directive"
         }
       ]
     },

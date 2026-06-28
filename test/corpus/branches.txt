@@ -11,10 +11,10 @@ branches with and without conditions
 ---
 
 (source_file
-  (statement (instruction_line (instruction (branch_mnemonic) (local_label))))
-  (statement (instruction_line (instruction (branch_mnemonic) (condition_code) (local_label))))
-  (statement (instruction_line (instruction (branch_mnemonic) (register))))
-  (statement (instruction_line (instruction (branch_mnemonic) (condition_code) (identifier))))
-  (statement (instruction_line (instruction (branch_mnemonic) (condition_code) (identifier))))
-  (statement (instruction_line (instruction (branch_mnemonic))))
-  (statement (instruction_line (instruction (branch_mnemonic) (condition_code)))))
+  (statement (instruction (branch_mnemonic) (local_label)))
+  (statement (instruction (branch_mnemonic) (condition_code) (local_label)))
+  (statement (instruction (branch_mnemonic) (register)))
+  (statement (instruction (branch_mnemonic) (condition_code) (identifier)))
+  (statement (instruction (branch_mnemonic) (condition_code) (identifier)))
+  (statement (instruction (branch_mnemonic)))
+  (statement (instruction (branch_mnemonic) (condition_code))))

@@ -24,7 +24,7 @@ ENDM_LOOP:
 
 (source_file
   (statement (label_definition name: (identifier)))
-  (statement (instruction_line (instruction mnemonic: (mnemonic)))))
+  (statement (instruction mnemonic: (mnemonic))))
 
 ==================
 anonymous labels
@@ -38,10 +38,10 @@ anonymous labels
 
 (source_file
   (statement (label_definition (anonymous_label)))
-  (statement (instruction_line (instruction (branch_mnemonic) (anonymous_label_ref))))
-  (statement (instruction_line (instruction (branch_mnemonic) (anonymous_label_ref))))
+  (statement (instruction (branch_mnemonic) (anonymous_label_ref)))
+  (statement (instruction (branch_mnemonic) (anonymous_label_ref)))
   (statement (label_definition (anonymous_label)))
-  (statement (instruction_line (instruction (branch_mnemonic) (anonymous_label_ref)))))
+  (statement (instruction (branch_mnemonic) (anonymous_label_ref))))
 
 ==================
 interpolated label definitions
@@ -55,6 +55,6 @@ Color{i}:
 (source_file
   (statement (label_definition
     name: (interpolated_identifier (identifier) (interpolation))))
-  (statement (instruction_line (instruction mnemonic: (mnemonic))))
+  (statement (instruction mnemonic: (mnemonic)))
   (statement (label_definition name: (interpolation)))
-  (statement (instruction_line (instruction mnemonic: (mnemonic)))))
+  (statement (instruction mnemonic: (mnemonic))))

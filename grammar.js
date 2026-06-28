@@ -78,8 +78,7 @@ module.exports = grammar({
     _line_body: ($) =>
       choice(
         $.comment,
-        $.instruction_line,
-        $.data_directive,
+        $._code_line,
         $.section_directive,
         $.define_directive,
         $.export_directive,
@@ -148,7 +147,10 @@ module.exports = grammar({
 
     argument_list: ($) => sepByComma($._expression),
 
-    instruction_line: ($) => seq($.instruction, repeat(seq('::', $.instruction))),
+    // `::` separates instructions and data directives on one line (rgbasm(5)).
+    // Hidden: the chained elements are direct children of `statement`.
+    _code_line: ($) => seq($._code_element, repeat(seq('::', $._code_element))),
+    _code_element: ($) => choice($.instruction, $.data_directive),
 
     instruction: ($) => choice($._plain_instruction, $._branch_instruction),
 
