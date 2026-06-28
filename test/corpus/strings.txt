@@ -37,3 +37,18 @@ PRINTLN "raw {SYM} and {{nested}} and arg \1"
       (interpolation)
       (interpolation (interpolation))
       (macro_argument))))))
+
+==================
+multi-line strings
+==================
+DB """line one
+line "two" with quotes
+sum = {d:N}""", #"""raw
+multi \no escapes"""
+---
+
+(source_file
+  (statement (data_directive
+    (argument_list
+      (multiline_string (interpolation (format_spec)))
+      (raw_multiline_string)))))

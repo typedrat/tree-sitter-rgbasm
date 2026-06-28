@@ -1523,6 +1523,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "multiline_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "raw_multiline_string"
+        },
+        {
+          "type": "SYMBOL",
           "name": "_label_ref"
         },
         {
@@ -2229,6 +2237,68 @@
         "value": "#\"[^\"\\n]*\""
       }
     },
+    "multiline_string": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\"\"\""
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_ml_string_content"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "escape_sequence"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "interpolation"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "macro_argument"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "\"\"\""
+        }
+      ]
+    },
+    "raw_multiline_string": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#\"\"\""
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_raw_ml_string_content"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "\"\"\""
+        }
+      ]
+    },
     "_string": {
       "type": "CHOICE",
       "members": [
@@ -2239,6 +2309,14 @@
         {
           "type": "SYMBOL",
           "name": "raw_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "multiline_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "raw_multiline_string"
         }
       ]
     },
@@ -3391,7 +3469,16 @@
     ]
   ],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "_ml_string_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_raw_ml_string_content"
+    }
+  ],
   "inline": [],
   "supertypes": [],
   "reserved": {}

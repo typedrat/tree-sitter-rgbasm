@@ -47,6 +47,8 @@ const PREC = {
 module.exports = grammar({
   name: 'rgbasm',
 
+  externals: ($) => [$._ml_string_content, $._raw_ml_string_content],
+
   // identifier at the start of a line is ambiguous between the name field of
   // a _symbol-using rule (macro_invocation, define_directive, …) and the
   // identifier that begins a label_definition.  Tree-sitter uses the
@@ -225,6 +227,8 @@ module.exports = grammar({
         $._number,
         $.string,
         $.raw_string,
+        $.multiline_string,
+        $.raw_multiline_string,
         $._label_ref,
         $.identifier,
         $.interpolation,
@@ -316,8 +320,17 @@ module.exports = grammar({
     // Raw string: opaque, no escapes or interpolation. Cannot contain '"'.
     raw_string: ($) => token(/#"[^"\n]*"/),
 
-    // All single-line string forms. Extended with multi-line forms in later tasks.
-    _string: ($) => choice($.string, $.raw_string),
+    multiline_string: ($) =>
+      seq(
+        '"""',
+        repeat(choice($._ml_string_content, $.escape_sequence, $.interpolation, $.macro_argument)),
+        '"""',
+      ),
+    raw_multiline_string: ($) =>
+      seq('#"""', optional($._raw_ml_string_content), '"""'),
+
+    // All string forms.
+    _string: ($) => choice($.string, $.raw_string, $.multiline_string, $.raw_multiline_string),
 
     // A symbol name: a plain identifier, a bare {interpolation}, or an
     // identifier/interpolation head glued (no whitespace) to more pieces.
