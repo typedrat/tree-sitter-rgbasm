@@ -44,7 +44,7 @@ const PREC = {
   call: 10,
 };
 
-module.exports = grammar({
+export default grammar({
   name: 'rgbasm',
 
   externals: ($) => [$._ml_string_content, $._raw_ml_string_content],

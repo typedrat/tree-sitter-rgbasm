@@ -6,17 +6,40 @@
       "camelcase": "Rgbasm",
       "scope": "source.rgbasm",
       "path": ".",
-      "file-types": ["asm", "inc"],
-      "highlights": ["queries/highlights.scm"],
-      "injections": ["queries/injections.scm"]
+      "file-types": [
+        "asm",
+        "inc"
+      ],
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ]
     }
   ],
   "metadata": {
     "version": "0.1.0",
     "license": "MIT",
     "description": "RGBASM (RGBDS Game Boy assembly) grammar for tree-sitter",
-    "authors": [{ "name": "Alexis Williams", "email": "alexis@typedr.at" }],
-    "links": { "repository": "https://github.com/typedrat/tree-sitter-rgbasm" }
+    "authors": [
+      {
+        "name": "Alexis Williams",
+        "email": "alexis@typedr.at"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/typedrat/tree-sitter-rgbasm"
+    }
   },
-  "bindings": { "c": true, "go": false, "node": true, "python": false, "rust": true, "swift": false }
+  "bindings": {
+    "c": true,
+    "go": false,
+    "java": false,
+    "node": true,
+    "python": false,
+    "rust": true,
+    "swift": false,
+    "zig": false
+  }
 }
