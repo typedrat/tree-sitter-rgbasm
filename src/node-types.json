@@ -1587,6 +1587,14 @@
             "named": true
           },
           {
+            "type": "interpolated_identifier",
+            "named": true
+          },
+          {
+            "type": "interpolation",
+            "named": true
+          },
+          {
             "type": "local_label",
             "named": true
           }

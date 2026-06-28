@@ -3321,7 +3321,7 @@
               "name": "name",
               "content": {
                 "type": "SYMBOL",
-                "name": "identifier"
+                "name": "_symbol"
               }
             },
             {
@@ -3462,12 +3462,7 @@
       "name": "block_comment"
     }
   ],
-  "conflicts": [
-    [
-      "_symbol",
-      "label_definition"
-    ]
-  ],
+  "conflicts": [],
   "precedences": [],
   "externals": [
     {

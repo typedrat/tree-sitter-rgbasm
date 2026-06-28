@@ -169,10 +169,13 @@ cp queries/zed/*.scm languages/rgbasm/
   and `\1`/`\@`/`\#` forms so editors can highlight them, but does not expand them — that is an
   assembler-time transformation.
 
-- **Block comments and line continuations inside triple-quoted strings are not processed.** The
-  external scanner consumes triple-quoted string content opaquely between interpolation/escape
-  stops; `/* */` and `\` line continuations within the string body are treated as literal content,
-  not as comments or splices. This is intentional.
+- **Block comments inside triple-quoted strings are not processed.** The external scanner consumes
+  triple-quoted content opaquely between interpolation/escape stops, so a `/* */` sequence within
+  the string body is literal content, not a `block_comment`. This is intentional.
+
+- **Line continuations are not modeled inside strings.** A `\`-at-end-of-line splice is not
+  recognized within any string body; in a non-raw string a stray `\` begins an escape, so a
+  backslash immediately before a newline yields a parse error rather than a continuation.
 
 - **Charmap directives parse structurally, but custom string-encoding semantics are not modeled.**
   `CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC` now have real argument shapes; the assembler's

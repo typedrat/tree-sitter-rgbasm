@@ -49,15 +49,6 @@ module.exports = grammar({
 
   externals: ($) => [$._ml_string_content, $._raw_ml_string_content],
 
-  // identifier at the start of a line is ambiguous between the name field of
-  // a _symbol-using rule (macro_invocation, define_directive, …) and the
-  // identifier that begins a label_definition.  Tree-sitter uses the
-  // next-token lookahead (e.g. ':', '::', a mnemonic following the name) to
-  // pick the right interpretation at runtime.
-  conflicts: ($) => [
-    [$._symbol, $.label_definition],
-  ],
-
   extras: ($) => [
     /[ \t]/, // horizontal whitespace
     /\\\r?\n/, // line continuation: backslash + newline
@@ -337,9 +328,9 @@ module.exports = grammar({
     _symbol: ($) => choice($.identifier, $.interpolation, $.interpolated_identifier),
 
     // Head (identifier or interpolation) followed by ≥1 immediate pieces with
-    // no intervening whitespace.  Aliases _immediate_interpolation to $.interpolation
-    // so the child node type is uniform regardless of whether whitespace was
-    // legal at that position.
+    // no intervening whitespace.  _immediate_interpolation is aliased to
+    // $.interpolation so callers always see `interpolation` children, whether or
+    // not the '{' was immediate.
     interpolated_identifier: ($) =>
       seq(
         choice($.identifier, $.interpolation),
@@ -425,8 +416,9 @@ module.exports = grammar({
 
     label_definition: ($) =>
       choice(
-        // Global/scoped labels require a colon (distinguishes from macro calls).
-        seq(field('name', $.identifier), repeat($.macro_argument), choice('::', ':')),
+        // Global/scoped labels require a colon: the trailing ':'/'::' is what
+        // distinguishes a label from a macro call sharing the same _symbol name.
+        seq(field('name', $._symbol), repeat($.macro_argument), choice('::', ':')),
         // Local labels may omit the colon.
         seq(field('name', $.local_label), repeat($.macro_argument), optional(choice('::', ':'))),
         // Anonymous label definition: a bare colon, no name.
