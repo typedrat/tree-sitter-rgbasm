@@ -23,26 +23,22 @@ include_me:
     (label_definition
       name: (identifier)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (branch_mnemonic)
-        (identifier))))
+    (instruction
+      mnemonic: (branch_mnemonic)
+      (identifier)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (branch_mnemonic)
-        (identifier))))
+    (instruction
+      mnemonic: (branch_mnemonic)
+      (identifier)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (branch_mnemonic)
-        (identifier))))
+    (instruction
+      mnemonic: (branch_mnemonic)
+      (identifier)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)
-        (register)
-        (identifier)))))
+    (instruction
+      mnemonic: (mnemonic)
+      (register)
+      (identifier))))
 
 ==================
 condition vs register disambiguation for c
@@ -58,33 +54,28 @@ condition vs register disambiguation for c
 
 (source_file
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (branch_mnemonic)
-        (condition_code)
-        (local_label))))
+    (instruction
+      mnemonic: (branch_mnemonic)
+      (condition_code)
+      (local_label)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)
-        (register)
-        (register))))
+    (instruction
+      mnemonic: (mnemonic)
+      (register)
+      (register)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (branch_mnemonic)
-        (register))))
+    (instruction
+      mnemonic: (branch_mnemonic)
+      (register)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (branch_mnemonic)
-        (condition_code))))
+    (instruction
+      mnemonic: (branch_mnemonic)
+      (condition_code)))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (branch_mnemonic)
-        (condition_code)
-        (local_label)))))
+    (instruction
+      mnemonic: (branch_mnemonic)
+      (condition_code)
+      (local_label))))
 
 ==================
 hl increment vs hl-prefixed label
@@ -100,36 +91,31 @@ hl increment vs hl-prefixed label
 
 (source_file
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)
-        (register)
-        (mem_access
-          (register)))))
-  (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)
-        (register)
-        (mem_access
-          (register_increment)))))
-  (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)
-        (mem_access
-          (register_increment))
+    (instruction
+      mnemonic: (mnemonic)
+      (register)
+      (mem_access
         (register))))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)
-        (mem_access
-          (register_increment))
-        (register))))
+    (instruction
+      mnemonic: (mnemonic)
+      (register)
+      (mem_access
+        (register_increment))))
   (statement
-    (instruction_line
-      (instruction
-        mnemonic: (mnemonic)
-        (register)
-        (identifier)))))
+    (instruction
+      mnemonic: (mnemonic)
+      (mem_access
+        (register_increment))
+      (register)))
+  (statement
+    (instruction
+      mnemonic: (mnemonic)
+      (mem_access
+        (register_increment))
+      (register)))
+  (statement
+    (instruction
+      mnemonic: (mnemonic)
+      (register)
+      (identifier))))

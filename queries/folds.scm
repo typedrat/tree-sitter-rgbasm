@@ -5,4 +5,5 @@
   (if_block)
   (union_block)
   (load_block)
+  (fragment_literal)
 ] @fold

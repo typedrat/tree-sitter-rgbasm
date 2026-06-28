@@ -78,8 +78,7 @@ module.exports = grammar({
     _line_body: ($) =>
       choice(
         $.comment,
-        $.instruction_line,
-        $.data_directive,
+        $._code_line,
         $.section_directive,
         $.define_directive,
         $.export_directive,
@@ -148,7 +147,10 @@ module.exports = grammar({
 
     argument_list: ($) => sepByComma($._expression),
 
-    instruction_line: ($) => seq($.instruction, repeat(seq('::', $.instruction))),
+    // `::` separates instructions and data directives on one line (rgbasm(5)).
+    // Hidden: the chained elements are direct children of `statement`.
+    _code_line: ($) => seq($._code_element, repeat(seq('::', $._code_element))),
+    _code_element: ($) => choice($.instruction, $.data_directive),
 
     instruction: ($) => choice($._plain_instruction, $._branch_instruction),
 
@@ -228,6 +230,7 @@ module.exports = grammar({
         $.program_counter,
         $.anonymous_label_ref,
         $.macro_argument,
+        $.fragment_literal,
         $.parenthesized_expression,
         $.unary_expression,
         $.binary_expression,
@@ -240,6 +243,23 @@ module.exports = grammar({
     // Anonymous label reference: ':' followed by one or more '+'/'-'.
     // The '+'/'-' run is required, so this never collides with a bare ':'.
     anonymous_label_ref: ($) => token(/:[-+]+/),
+
+    // Inline section fragment: [[ statements ]] in expression position.
+    // Body is a newline-separated `statement` list, so inner labels/
+    // instructions/data/directives and nested [[…]] are fully structured.
+    // `[[`/`]]` are literal tokens; longest-match beats `[`/`]`, so a fragment
+    // nests cleanly inside a `[ … ]` mem_access.
+    fragment_literal: ($) =>
+      seq(
+        '[[',
+        repeat('\n'),
+        optional(seq(
+          $.statement,
+          repeat(seq(repeat1('\n'), $.statement)),
+          repeat('\n'),
+        )),
+        ']]',
+      ),
 
     parenthesized_expression: ($) => seq('(', $._expression, ')'),
 
