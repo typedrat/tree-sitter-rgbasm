@@ -45,6 +45,10 @@
           "named": true
         },
         {
+          "type": "fragment_literal",
+          "named": true
+        },
+        {
           "type": "graphics_constant",
           "named": true
         },
@@ -145,6 +149,10 @@
           },
           {
             "type": "fixed_point",
+            "named": true
+          },
+          {
+            "type": "fragment_literal",
             "named": true
           },
           {
@@ -337,6 +345,10 @@
           },
           {
             "type": "fixed_point",
+            "named": true
+          },
+          {
+            "type": "fragment_literal",
             "named": true
           },
           {
@@ -555,6 +567,10 @@
           "named": true
         },
         {
+          "type": "fragment_literal",
+          "named": true
+        },
+        {
           "type": "graphics_constant",
           "named": true
         },
@@ -717,6 +733,10 @@
           "named": true
         },
         {
+          "type": "fragment_literal",
+          "named": true
+        },
+        {
           "type": "graphics_constant",
           "named": true
         },
@@ -836,6 +856,10 @@
           },
           {
             "type": "fixed_point",
+            "named": true
+          },
+          {
+            "type": "fragment_literal",
             "named": true
           },
           {
@@ -986,6 +1010,10 @@
         },
         {
           "type": "fixed_point",
+          "named": true
+        },
+        {
+          "type": "fragment_literal",
           "named": true
         },
         {
@@ -1151,6 +1179,10 @@
           "named": true
         },
         {
+          "type": "fragment_literal",
+          "named": true
+        },
+        {
           "type": "graphics_constant",
           "named": true
         },
@@ -1218,6 +1250,21 @@
     }
   },
   {
+    "type": "fragment_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "if_block",
     "named": true,
     "fields": {
@@ -1255,6 +1302,10 @@
           },
           {
             "type": "fixed_point",
+            "named": true
+          },
+          {
+            "type": "fragment_literal",
             "named": true
           },
           {
@@ -1448,6 +1499,10 @@
         },
         {
           "type": "fixed_point",
+          "named": true
+        },
+        {
+          "type": "fragment_literal",
           "named": true
         },
         {
@@ -1790,6 +1845,10 @@
           "named": true
         },
         {
+          "type": "fragment_literal",
+          "named": true
+        },
+        {
           "type": "graphics_constant",
           "named": true
         },
@@ -1950,6 +2009,10 @@
           "named": true
         },
         {
+          "type": "fragment_literal",
+          "named": true
+        },
+        {
           "type": "graphics_constant",
           "named": true
         },
@@ -2089,6 +2152,10 @@
           },
           {
             "type": "fixed_point",
+            "named": true
+          },
+          {
+            "type": "fragment_literal",
             "named": true
           },
           {
@@ -2232,6 +2299,10 @@
         },
         {
           "type": "fixed_point",
+          "named": true
+        },
+        {
+          "type": "fragment_literal",
           "named": true
         },
         {
@@ -2554,6 +2625,10 @@
           "named": true
         },
         {
+          "type": "fragment_literal",
+          "named": true
+        },
+        {
           "type": "graphics_constant",
           "named": true
         },
@@ -2811,7 +2886,15 @@
     "named": false
   },
   {
+    "type": "[[",
+    "named": false
+  },
+  {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "]]",
     "named": false
   },
   {

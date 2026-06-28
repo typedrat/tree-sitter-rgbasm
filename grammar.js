@@ -230,6 +230,7 @@ module.exports = grammar({
         $.program_counter,
         $.anonymous_label_ref,
         $.macro_argument,
+        $.fragment_literal,
         $.parenthesized_expression,
         $.unary_expression,
         $.binary_expression,
@@ -242,6 +243,23 @@ module.exports = grammar({
     // Anonymous label reference: ':' followed by one or more '+'/'-'.
     // The '+'/'-' run is required, so this never collides with a bare ':'.
     anonymous_label_ref: ($) => token(/:[-+]+/),
+
+    // Inline section fragment: [[ statements ]] in expression position.
+    // Body is a newline-separated `statement` list, so inner labels/
+    // instructions/data/directives and nested [[…]] are fully structured.
+    // `[[`/`]]` are literal tokens; longest-match beats `[`/`]`, so a fragment
+    // nests cleanly inside a `[ … ]` mem_access.
+    fragment_literal: ($) =>
+      seq(
+        '[[',
+        repeat('\n'),
+        optional(seq(
+          $.statement,
+          repeat(seq(repeat1('\n'), $.statement)),
+          repeat('\n'),
+        )),
+        ']]',
+      ),
 
     parenthesized_expression: ($) => seq('(', $._expression, ')'),
 

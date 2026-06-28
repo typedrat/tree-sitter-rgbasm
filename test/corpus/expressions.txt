@@ -26,3 +26,46 @@ DB Color{i}_data
   (statement (data_directive
     (argument_list
       (interpolated_identifier (identifier) (interpolation))))))
+
+==================
+fragment literal inline and multi-line
+==================
+DW [[ db 1 ]]
+    call [[
+        ld de, $1003
+        jp Print
+    ]]
+---
+
+(source_file
+  (statement (data_directive
+    (argument_list
+      (fragment_literal
+        (statement (data_directive (argument_list (decimal))))))))
+  (statement (instruction
+    (branch_mnemonic)
+    (fragment_literal
+      (statement (instruction (mnemonic) (register) (hex)))
+      (statement (instruction (branch_mnemonic) (identifier)))))))
+
+==================
+fragment literal nested and in mem access
+==================
+DW [[ jp [[ ret ]] ]]
+    ld a, [ [[ db 20 ]] ]
+---
+
+(source_file
+  (statement (data_directive
+    (argument_list
+      (fragment_literal
+        (statement (instruction
+          (branch_mnemonic)
+          (fragment_literal
+            (statement (instruction (branch_mnemonic))))))))))
+  (statement (instruction
+    (mnemonic)
+    (register)
+    (mem_access
+      (fragment_literal
+        (statement (data_directive (argument_list (decimal)))))))))
