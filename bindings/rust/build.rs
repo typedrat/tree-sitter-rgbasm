@@ -53,4 +53,11 @@ fn main() {
     if !"queries/tags.scm".is_empty() && std::path::Path::new("queries/tags.scm").exists() {
         println!("cargo:rustc-cfg=with_tags_query");
     }
+
+    // Generate strongly-typed AST structs/enums from node-types.json into
+    // $OUT_DIR; lib.rs includes the result.
+    let node_types = "src/node-types.json";
+    println!("cargo:rerun-if-changed={node_types}");
+    treesitter_types::codegen::emit_to_out_dir(node_types)
+        .expect("failed to generate typed AST from node-types.json");
 }

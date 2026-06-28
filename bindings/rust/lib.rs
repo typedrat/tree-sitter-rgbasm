@@ -4,8 +4,7 @@
 //! tree-sitter [`Parser`], and then use the parser to parse some code:
 //!
 //! ```
-//! let code = r#"
-//! "#;
+//! let code = "nop\n";
 //! let mut parser = tree_sitter::Parser::new();
 //! let language = tree_sitter_rgbasm::LANGUAGE;
 //! parser
@@ -48,6 +47,14 @@ pub const LOCALS_QUERY: &str = include_str!("../../queries/locals.scm");
 /// The symbol tagging query for this grammar.
 pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
 
+// Strongly-typed AST structs and enums generated from `node-types.json` at
+// build time (see build.rs). Named nodes become structs, supertypes become
+// enums, optional fields are `Option<T>`, repeated fields are `Vec<T>`.
+// Construct the root with `SourceFile::from_node` and walk via the generated
+// accessors. Runtime traits and the matching `tree_sitter` re-export come from
+// the `treesitter-types` crate.
+include!(concat!(env!("OUT_DIR"), "/treesitter_types_generated.rs"));
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -56,5 +63,21 @@ mod tests {
         parser
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading Rgbasm parser");
+    }
+
+    #[test]
+    fn typed_ast_root_exposes_statements() {
+        use treesitter_types::FromNode;
+
+        let src = b"nop\n";
+        let mut parser = tree_sitter::Parser::new();
+        parser
+            .set_language(&super::LANGUAGE.into())
+            .expect("Error loading Rgbasm parser");
+        let tree = parser.parse(src, None).unwrap();
+
+        let source_file = super::SourceFile::from_node(tree.root_node(), src)
+            .expect("root node is a source_file");
+        assert_eq!(source_file.children.len(), 1);
     }
 }
