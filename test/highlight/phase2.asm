@@ -16,3 +16,10 @@ line {x:N}"""
 :
 
 DEF {prefix}_value = 1
+
+FragTest:
+    call [[
+        ld a, 1
+        ret
+    ]]
+    DW [[ db 1 ]], [[ db 2 :: db 3 ]]

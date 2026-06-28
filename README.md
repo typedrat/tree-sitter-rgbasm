@@ -15,12 +15,14 @@ labels (`:` / `:+` / `:-`), single-line raw strings (`#"…"`), multi-line strin
 triple-quoted raw strings (`#"""…"""`), symbol interpolation (`{fmt:sym}`) inside strings and in
 name-building positions (`DEF {name}`, `Color{i}_data`), macro-arg tokens inside strings
 (`\1`–`\9`, `\@`, `\#`), and structured charmap directives
-(`CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC`).
+(`CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC`), and inline fragment literals (`[[ … ]]`).
 
-### Deferred / future work
+### Known limitations
 
-- **Fragment literals `[[ … ]]`** — these embed full statements inside an expression position,
-  which conflicts with the grammar's line-oriented model; deferred to a later phase.
+- **Fragment-literal inline rewrite.** The rgbasm(5) docs show a space-separated
+  inline rewrite (`call [[…]] jr [[…]]` with no separator between the two inner
+  statements). That is documentation shorthand, not real syntax: fragment bodies
+  separate statements by newlines (and `::` within the instruction/data subset).
 
 ## Build & test
 
