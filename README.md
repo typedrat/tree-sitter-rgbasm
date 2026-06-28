@@ -3,26 +3,25 @@
 A [tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar for RGBASM, the assembler
 component of [RGBDS](https://rgbds.gbdev.io/) v1.0.1 (Game Boy assembly).
 
-## Status: Phase 1 (core subset)
+## Status: Phase 2
 
 The grammar covers the core RGBASM language, including instructions, registers, condition codes,
 all numeric literal formats, strings, expressions with full operator precedence, labels,
 `SECTION`/`DEF`/`EQU`/`EQUS`/`RS`/assignment directives, `EXPORT`/`PURGE`/`INCLUDE`,
 `MACRO`/`REPT`/`FOR`/`IF`/`UNION`/`LOAD` blocks, and macro-argument tokens.
 
-### Phase 2 roadmap (not yet implemented)
+Phase 2 adds the "exotic" surface-syntax features: graphics constants (`` `0123 ``), anonymous
+labels (`:` / `:+` / `:-`), single-line raw strings (`#"…"`), multi-line strings (`"""…"""`),
+triple-quoted raw strings (`#"""…"""`), symbol interpolation (`{fmt:sym}`) inside strings and in
+name-building positions (`DEF {name}`, `Color{i}_data`), macro-arg tokens inside strings
+(`\1`–`\9`, `\@`, `\#`), and structured charmap directives
+(`CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC`).
 
-The following features are intentionally deferred:
+### Deferred / future work
 
-- Symbol interpolation: `{fmt:sym}` inside strings
-- Raw strings: `#"…"`
-- Multi-line strings: `"""…"""`
-- Fragment literals: `[[ … ]]`
-- Anonymous labels: `:+` / `:-`
-- Graphics constants: `` `0123 ``
-- Charmap semantics: `CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC` directives parse as
-  generic directives, but charmap semantics (custom string encodings) are not modeled
-- Full symbol-interpolation semantics (macro-time text expansion)
+- **Fragment literals `[[ … ]]`** — these embed full statements inside an expression position,
+  which conflicts with the grammar's line-oriented model; deferred to a later phase.
+- Symbol-interpolation and macro-arg *semantics* (assembler-time text expansion) are not modeled.
 
 ## Build & test
 
@@ -161,3 +160,21 @@ cp queries/zed/*.scm languages/rgbasm/
 - **`keyword:` field for highlighting.** Directive and block keywords are exposed via a `keyword:`
   field on their parent node, making them straightforward to highlight without capturing anonymous
   string literals.
+
+- **Custom graphics glyphs not supported.** `graphics_constant` accepts the default `0`–`3` digit
+  set with lenient width (one or more digits); `OPT g<chars>` redefinitions won't match, and the
+  assembler's exact-8-digit rule is not enforced. This is the same class of accepted limitation as
+  the globally-reserved section-type keywords.
+
+- **Interpolation and macro-arg recognition is syntactic only.** The grammar recognizes `{fmt:sym}`
+  and `\1`/`\@`/`\#` forms so editors can highlight them, but does not expand them — that is an
+  assembler-time transformation.
+
+- **Block comments and line continuations inside triple-quoted strings are not processed.** The
+  external scanner consumes triple-quoted string content opaquely between interpolation/escape
+  stops; `/* */` and `\` line continuations within the string body are treated as literal content,
+  not as comments or splices. This is intentional.
+
+- **Charmap directives parse structurally, but custom string-encoding semantics are not modeled.**
+  `CHARMAP`/`NEWCHARMAP`/`SETCHARMAP`/`PUSHC`/`POPC` now have real argument shapes; the assembler's
+  character-remapping behaviour at string evaluation time is not represented in the parse tree.
